@@ -96,10 +96,7 @@ public class DroolsUtil {
 	 * @return string
 	 * @throws Exception
 	 */
-	private InputStream getDroolsTemplate() throws Exception{
-		String webRootAppPath = FileUtils.getWebRootPath();
-
-		return ResourceFactory.newFileResource(webRootAppPath+ File.separator
-				+ "ruleTemplate/Tp.drl").getInputStream();
+	private InputStream getDroolsTemplate() {
+		return FileUtils.getResource("/ruleTemplate/Tp.drl");
 	}
 }
