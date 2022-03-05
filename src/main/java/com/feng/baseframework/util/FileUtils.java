@@ -4,6 +4,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.util.Assert;
 import org.springframework.util.ResourceUtils;
 
@@ -212,11 +213,24 @@ public class FileUtils {
 		}
 	}
 
+	/**
+	 * 描述: 获取资源流对象<br/>
+	 * 时间:17:29 2022/3/1 <br/>
+	 *
+	 * @param filePath
+	 * @author lanhaifeng
+	 * @return java.io.InputStream
+	 */
+	public static InputStream getResource(String filePath) {
+		return FileUtils.class.getResourceAsStream(filePath);
+	}
+
 
 	public static void main(String[] args) throws IOException {
 		System.out.println(getWebRootPath());
 		System.out.println(ResourceUtils.getFile("classpath:").getPath());
 		File file = ResourceUtils.getFile("classpath:ruleTemplate/Tp.drl");
+		System.out.println("sdfsd"+new ClassPathResource("classpath:").getPath());
 
 		if(file != null && file.exists() && file.isFile()){
 			System.out.println(file.getPath());

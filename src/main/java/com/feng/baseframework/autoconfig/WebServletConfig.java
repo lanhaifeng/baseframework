@@ -2,6 +2,7 @@ package com.feng.baseframework.autoconfig;
 
 import com.feng.baseframework.interceptor.SimpleHandlerInterceptor;
 import com.feng.baseframework.listener.OnlineUserListener;
+import com.feng.baseframework.messageConverter.JavaScriptMessageConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.embedded.ConfigurableEmbeddedServletContainer;
 import org.springframework.boot.context.embedded.EmbeddedServletContainerCustomizer;
@@ -54,6 +55,7 @@ public class WebServletConfig extends WebMvcConfigurerAdapter {
     @Override
     public void extendMessageConverters(List<HttpMessageConverter<?>> converters) {
         converters.add(new FormHttpMessageConverter());
+        converters.add(new JavaScriptMessageConverter());
     }
 
     //配置监听器用于获取当前项目路径

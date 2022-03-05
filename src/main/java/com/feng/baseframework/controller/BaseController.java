@@ -5,14 +5,12 @@ import org.hibernate.validator.constraints.NotEmpty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.WebApplicationContext;
 
 import javax.servlet.ServletContext;
@@ -85,5 +83,22 @@ public class BaseController extends ClassFilterController {
         logger.info(logger.getClass().toGenericString());
         logger.info("test logback log");
         logger.info("test logback log");
+    }
+
+    @GetMapping(value = "/baseManage/jsonp1", produces = "application/javascript;charset=UTF-8")
+    public MappingJacksonValue jsonp1(String callback){
+        User user = new User();
+        user.setName("test");
+        MappingJacksonValue mjv = new MappingJacksonValue(user);
+        mjv.setJsonpFunction(callback);
+
+        return mjv;
+    }
+    @GetMapping(value = "/baseManage/jsonp2", produces = "application/javascript;charset=UTF-8")
+    public User jsonp2(){
+        User user = new User();
+        user.setName("test");
+
+        return user;
     }
 }

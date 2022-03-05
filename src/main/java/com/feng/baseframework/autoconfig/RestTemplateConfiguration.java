@@ -234,7 +234,7 @@ public class RestTemplateConfiguration {
             keyManagerFactory = KeyManagerFactory.getInstance("SunX509");
             //KeyStore用于存放证书，创建对象时 指定交换数字证书的加密标准
             keyStore = KeyStore.getInstance(keyStoreType);
-            InputStream inputStream = new FileInputStream(FileUtils.getFileByRelativePath(keyFilePath));
+            InputStream inputStream = FileUtils.getResource(keyFilePath);
             try {
                 //添加证书
                 keyStore.load(inputStream, keyStorePassword.toCharArray());
@@ -256,7 +256,7 @@ public class RestTemplateConfiguration {
             //加载证书材料，构建sslContext
             trustManagerFactory = TrustManagerFactory.getInstance("SunX509");
             trustKeyStore = KeyStore.getInstance(keyStoreType);
-            InputStream inputStream = new FileInputStream(FileUtils.getFileByRelativePath(trustFilePath));
+            InputStream inputStream = FileUtils.getResource(trustFilePath);
             try {
                 //添加证书
                 trustKeyStore.load(inputStream, trustPassword.toCharArray());
