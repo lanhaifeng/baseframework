@@ -15,12 +15,21 @@ import sun.misc.SignalHandler;
  */
 public class SignalStudy implements SignalHandler {
 
+    private SignalHandler defaultHandler;
+
+    public SignalStudy(SignalHandler defaultHandler) {
+        this.defaultHandler = defaultHandler;
+    }
+
     /**
      * 执行: kill -15
      * 输出: receive signal:TERM
      */
     @Override
     public void handle(Signal signal) {
+        //先执行自定义行为
         System.out.println("receive signal:" + signal.getName());
+        //再执行默认行为
+        defaultHandler.handle(signal);
     }
 }

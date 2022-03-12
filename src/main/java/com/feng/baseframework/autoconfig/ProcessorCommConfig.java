@@ -25,7 +25,10 @@ public class ProcessorCommConfig {
      */
     @PostConstruct
     public void initSignal() {
-        Signal.handle(new Signal("TERM"), new SignalStudy());
+        //在SignalStudy需要用注册相同信号返回的默认信号处理handler执行默认行为，若直接使用SignalHandler.SIG_DFL执行默认行为会报错
+        SignalHandler defaultHandler = Signal.handle(new Signal("TERM"), SignalHandler.SIG_DFL);
+        //相同的信号，注册不同的处理器，后注入的处理器会覆盖前边的处理器
+        Signal.handle(new Signal("TERM"), new SignalStudy(defaultHandler));
         Signal.handle(new Signal("USR2"), SignalHandler.SIG_IGN);
         Signal.handle(new Signal("CONT"), SignalHandler.SIG_DFL);
     }
