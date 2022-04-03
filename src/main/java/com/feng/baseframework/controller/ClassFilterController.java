@@ -14,7 +14,7 @@ import java.util.Map;
  * 测试注解扫描
  *
  * @author lanhaifeng
- * @since
+ * @since 1.0
  **/
 @ClassLevelAdviceTag
 public class ClassFilterController {

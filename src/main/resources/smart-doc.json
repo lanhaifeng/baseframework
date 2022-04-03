@@ -1,0 +1,50 @@
+{
+  "projectName": "smart-doc",
+  "serverUrl": "http://127.0.0.1:9090",
+  "outPath": "D:\\data\\smart-api",
+  "packageFilters": "com.feng.baseframework.controller",
+  "allInOneDocFileName":"api.html",
+  "allInOne": true,
+  "showAuthor": true,
+  "showJavaType": true,
+  "ignoreRequestParams":[
+    "org.springframework.ui.ModelMap"
+  ],
+  "dataDictionaries": [
+    {
+      "title": "API状态码字典",
+      "enumClassName": "com.feng.baseframework.constant.ResultEnum",
+      "codeField": "code",
+      "descField": "message"
+    }
+  ],
+  "errorCodeDictionaries": [],
+  "customResponseFields": [
+    {
+      "name": "resultCode",
+      "desc": "Response code",
+      "value": "200"
+    },
+    {
+      "name": "resultMsg",
+      "desc": "错误信息",
+      "value": null
+    }
+  ],
+  "requestHeaders": [
+    {
+      "name": "token",
+      "type": "string",
+      "desc": "存放于cookie的校验信息",
+      "required": true,
+      "since": "-"
+    }
+  ],
+  "revisionLogs": [{
+    "version": "1.0",
+    "revisionTime": "2020-12-31 10:30",
+    "status": "update",
+    "author": "author",
+    "remarks": "desc"
+  }]
+}

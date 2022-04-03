@@ -23,7 +23,7 @@ import java.util.List;
  * 基础控制器，接口测试用
  *
  * @author lanhaifeng
- * @since
+ * @since 1.0
  **/
 @RestController
 @Validated
@@ -33,13 +33,29 @@ public class BaseController extends ClassFilterController {
     @Autowired
     private WebApplicationContext webApplicationContext;
 
+    /**
+     * 描述: 返回根目录<br/>
+     * 时间:16:00 2022/4/2 <br/>
+     *
+     * @author lanhaifeng
+     * @return java.lang.String 返回根目录绝对路径
+     */
 	@RequestMapping(value = "/baseManage/getWebRootPath",method=RequestMethod.GET)
     @PreAuthorize(value = "hasAuthority('ROLE_ADMIN')")
 	public String getWebRootPath() {
     	return System.getProperty("projectRootPath") == null ? "" : System.getProperty("projectRootPath");
 	}
 
-    //BindingResult只能用于@RequestPart @RequestBody，并和@Validated成对出现
+    /**
+     * 描述: 测试参数验证<br/>
+     * @description BindingResult只能用于@RequestPart @RequestBody，并和@Validated成对出现 <br/>
+     *
+     * 时间:16:01 2022/4/2 <br/>
+     *
+     * @param user     用户信息
+     * @author lanhaifeng
+     * @return java.lang.String 返回验证结果
+     */
     @RequestMapping(value = "/baseManage/validate1",method=RequestMethod.POST)
     public String validateTest1(@RequestBody @Validated User user, BindingResult result){
         String response = "true";
