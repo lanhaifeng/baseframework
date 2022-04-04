@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * 错误处理控制器
  *
  * @author lanhaifeng
- * @since
+ * @since 1.0
  **/
 @Controller
 public class ErrorController {

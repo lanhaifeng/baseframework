@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
  * kafka测试controller
  *
  * @author lanhaifeng
- * @since
+ * @since 1.0
  **/
 @RestController
 @RequestMapping(value = "kafka")

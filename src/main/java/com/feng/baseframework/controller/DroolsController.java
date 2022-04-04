@@ -22,7 +22,7 @@ import java.util.List;
  * drools控制器
  *
  * @author lanhaifeng
- * @since
+ * @since 1.0
  **/
 @RestController
 public class DroolsController {

@@ -21,7 +21,7 @@ import java.io.IOException;
  * solr控制器
  *
  * @author lanhaifeng
- * @since
+ * @since 1.0
  **/
 @RestController
 public class SolrController {

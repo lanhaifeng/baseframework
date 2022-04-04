@@ -29,7 +29,7 @@ import java.util.Map;
  * spring security测试
  *
  * @author lanhaifeng
- * @since
+ * @since 1.0
  **/
 @RestController
 @ClassLevelAdviceTag
