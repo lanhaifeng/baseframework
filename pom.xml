@@ -573,6 +573,17 @@
 	</profiles>
 
 	<build>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <includes>
+                    <include>
+                        *.json
+                    </include>
+                </includes>
+            </resource>
+        </resources>
+
 		<extensions>
 			<extension>
 				<groupId>kr.motd.maven</groupId>
