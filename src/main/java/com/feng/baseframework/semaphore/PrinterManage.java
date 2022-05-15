@@ -7,8 +7,9 @@ import org.slf4j.LoggerFactory;
 import java.util.concurrent.Semaphore;
 
 /**
- * 类名:Canteen <br/>
+ * 类名:PrinterManage <br/>
  * 描述:打印机-模拟多打印机 <br/>
+ * 信号量-用于控制共享资源的访问
  *
  * 时间:2022/3/20 16:35 <br/>
  *
