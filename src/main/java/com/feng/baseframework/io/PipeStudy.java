@@ -4,7 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StopWatch;
 
-import java.io.IOException;
+import java.io.*;
 import java.nio.ByteBuffer;
 import java.nio.channels.Pipe;
 import java.util.Arrays;
@@ -88,5 +88,58 @@ public class PipeStudy {
         }).start();
 
         countDownLatch.await();
+
+        CountDownLatch latch = new CountDownLatch(2);
+        PipedOutputStream output = new PipedOutputStream();
+        PipedInputStream  input  = new PipedInputStream(output);
+        new Thread(()-> {
+            try {
+                output.write("Hello world, pipe!".getBytes());
+                System.err.println(Thread.currentThread().getName()+"已输出!");
+            } catch (IOException ignored) {
+            }
+            latch.countDown();
+        }).start();
+
+        new Thread(()-> {
+            try {
+                int data = input.read();
+                System.err.println(Thread.currentThread().getName());
+                while(data != -1){
+                    System.out.print((char) data);
+                    data = input.read();
+                }
+            } catch (IOException e) {
+            }
+            latch.countDown();
+        }).start();
+
+        latch.await();
+
+        CountDownLatch downLatch = new CountDownLatch(2);
+        PipedWriter pipedWriter = new PipedWriter();
+        PipedReader pipedReader = new PipedReader(pipedWriter);
+
+        new Thread(()->{
+            try {
+                pipedWriter.write("pipedWriter write msg!");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            downLatch.countDown();
+        }).start();
+
+
+        new Thread(()->{
+            char[] str = new char[1024];
+            try {
+                int size = pipedReader.read(str);
+                System.err.println(new String(Arrays.copyOf(str, size)));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            downLatch.countDown();
+        }).start();
+        downLatch.await();
     }
 }
