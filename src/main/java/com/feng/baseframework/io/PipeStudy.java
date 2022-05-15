@@ -18,6 +18,9 @@ import java.util.concurrent.CountDownLatch;
  *  1.1 字节流管道 PipedInputStream PipedOutputStream
  *  1.2 字符流管道 PipedReader PipedWriter
  *  1.3 Pipe管道 Pipe.SourceChannel Pipe.SinkChannel
+ *  1.4 java父子进程通过匿名管道通信
+ *   1.4.1 父进程见PipeParentProcess
+ *   1.4.2 子进程PipeChildProcess
  *
  * 2.利用linux的管道文件实现进程间通信
  *  2.1 匿名管道单向通信
