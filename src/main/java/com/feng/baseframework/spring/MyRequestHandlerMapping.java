@@ -17,7 +17,7 @@ import java.lang.reflect.Method;
  * @since 1.0
  **/
 @Component
-    public class MyRequestHandlerMapping extends RequestMappingHandlerMapping {
+public class MyRequestHandlerMapping extends RequestMappingHandlerMapping {
 
     public MyRequestHandlerMapping() {
         setOrder(-100);
@@ -28,10 +28,16 @@ import java.lang.reflect.Method;
         return false;
     }
 
+    /**
+     * 注册controller方法
+     * 1.使用bean在spring容器中的名字
+     * 2.使用实例
+     */
     @Override
     public void afterPropertiesSet() {
         super.afterPropertiesSet();
-        detectHandlerMethods("myController");
+//        detectHandlerMethods("myController");
+        detectHandlerMethods(new MyController());
     }
 
     @Override

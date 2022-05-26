@@ -4,7 +4,6 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.feng.baseframework.constant.IpType;
 import com.feng.baseframework.model.User;
-import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
@@ -15,7 +14,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
  * @author lanhaifeng
  * @since
  **/
-@Component
 public class MyController {
 
     @ResponseBody
