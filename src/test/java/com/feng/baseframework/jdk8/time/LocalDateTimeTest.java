@@ -4,6 +4,7 @@ import org.junit.Test;
 
 import java.time.*;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.Date;
 
 /**
@@ -114,5 +115,54 @@ public class LocalDateTimeTest {
 
         //转Instant
         Instant instant = clock.instant();
+    }
+
+    @Test
+    public void period() {
+        LocalDate endTime = LocalDate.now();
+        LocalDate startTime = endTime.plusMonths(-23);
+        Period period = Period.between(startTime, endTime);
+
+        String result = new StringBuilder()
+                .append(period.getYears()).append("年")
+                .append(period.getMonths()).append("月")
+                .append(period.getDays()).append("天").toString()
+                .replace("-","");
+        System.out.println(result);
+    }
+
+    @Test
+    public void chronoUnit() {
+        LocalDate endTime = LocalDate.now();
+        LocalDate startTime = endTime.plusMonths(-23);
+
+        long days = ChronoUnit.DAYS.between(startTime, endTime);
+        for (long i = 0; i < days + 1; i++) {
+            System.out.println(startTime.plusDays(i).format(DateTimeFormatter.ofPattern("yyyy年MM月dd日")));
+        }
+    }
+
+    @Test
+    public void duration() {
+        LocalDateTime start = LocalDateTime.parse("2007-12-03T10:15:30");
+        LocalDateTime end = LocalDateTime.parse("2007-12-05T10:25:33");
+
+        //between的用法是end-start的时间，若start的时间大于end的时间，则所有的值是负的
+        Duration duration = Duration.between(start, end);
+
+        //此持续时间的字符串表示形式,使用基于ISO-8601秒*的表示形式,例如 PT8H6M12.345S
+        String timeString = duration.toString();
+        System.out.println("相差的天数=" + duration.toDays());
+        System.out.println("相差的小时=" + duration.toHours());
+        System.out.println("相差的分钟=" + duration.toMinutes());
+        //System.out.println("相差的秒数="+duration.toSeconds());
+        System.out.println("相差的毫秒=" + duration.toMillis());
+        System.out.println("相差的纳秒=" + duration.toNanos());
+        System.out.println("timeString时间=" + timeString);
+
+        //isNegative返回Duration实例对象是否为负
+        System.out.println(Duration.between(start, end).isNegative());//false  end-start为正，所以此处返回false
+        System.out.println(Duration.between(end, start).isNegative());//true   start-end为负，所以此处返回true
+        System.out.println(Duration.between(start, start).isNegative());//false start-start为0，所以此处为false
     }
 }
