@@ -142,3 +142,26 @@ public static void main(String[] args) {
 + [start](https://smart-doc-group.github.io/#/zh-cn/?id=smart-doc)
 + [文档注解](http://yui.github.io/yuidoc/syntax/index.html)
 + [javadoc](https://docs.oracle.com/javase/1.5.0/docs/tooldocs/solaris/javadoc.html#documentationcomments)
+
+
+# FAQ
+## 支持jackson和fastjson注解
+### 参数忽略不想展示的字段
+```text
+@JsonIgnoreProperties(value = { "paged", "unpaged", "pageNumber", "pageSize", "offset", "sort" })
+public class DeviceVo extends PageRequest implements Serializable {}
+
+/**
+ * 设备分页查询
+ * @apiNote 时间:23:51 2022/4/7
+ *
+ * @param deviceVo          查询条件vo
+ * @author lanhaifeng
+ * @return cn.com.bsfit.davinci.common.data.ResponseResult<org.springframework.data.domain.Page<cn.com.bsfit.davinci.devimgr.domain.Device>>
+ */
+@PostMapping("/device/queryPage")
+public ResponseResult<Page<Device>> findDevicePage(@RequestBody DeviceVo deviceVo) {
+    return ResponseResult.ok(Page.empty());
+}
+```
+> 结果Body-parameters/Query-parameters中参数会忽略@JsonIgnoreProperties注解配置的属性
