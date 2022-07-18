@@ -17,7 +17,7 @@ public class Assert {
     private Assert() {
     }
 
-    public static <T, E extends RuntimeException> void state(boolean asserted, Supplier<E> exSupplier) {
+    public static <E extends RuntimeException> void state(boolean asserted, Supplier<E> exSupplier) {
         // 断言未通过
         if (!asserted) throw exSupplier.get();
     }
