@@ -214,6 +214,14 @@ public class StreamTest {
         sum = Stream.of(1,2,3,4).reduce(7, Integer::sum);
         Assert.state(sum == 17);
     }
+
+    @Test
+    public void parallelTest() {
+        List<String> strings = Arrays.asList("abc", "", "bc", "efg", "abcd","", "jkl");
+        long count = strings.parallelStream().filter(
+                string -> !string.isEmpty()).count();
+        org.springframework.util.Assert.state(count == 5, "并行流测试");
+    }
 }
 
 @Setter
