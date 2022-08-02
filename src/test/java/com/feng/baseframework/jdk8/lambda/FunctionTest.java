@@ -20,6 +20,44 @@ import java.util.function.Supplier;
  * @Version: 1.0
  */
 public class FunctionTest {
+
+    /**
+     * lambda表达式
+     * 允许把函数作为一个方法的参数（函数作为参数传递进方法中）
+     * 使用 Lambda 表达式可以使代码变的更加简洁紧凑
+     *
+     * 函数式接口
+     * 函数式接口(Functional Interface)就是一个有且仅有一个抽象方法，但是可以有多个非抽象方法的接口
+     * 函数式接口可以被隐式转换为 lambda 表达式
+     * 使用Lambda表达式来表示该接口的一个实现
+     * 1.JDK 1.8函数式接口
+     * java.lang.Runnable
+     * java.util.concurrent.Callable
+     * java.security.PrivilegedAction
+     * java.util.Comparator
+     * java.io.FileFilter
+     * java.nio.file.PathMatcher
+     * java.lang.reflect.InvocationHandler
+     * java.beans.PropertyChangeListener
+     * java.awt.event.ActionListener
+     * javax.swing.event.ChangeListener
+     *
+     * 2.新增函数接口
+     * java.util.function
+     * java.util.function 它包含了很多类，用来支持 Java的 函数式编程
+     */
+    @FunctionalInterface
+    interface GreetingService
+    {
+        void sayMessage(String message);
+    }
+
+    @Test
+    public void functionalInterfaceTest() {
+        GreetingService greetService = message -> System.out.println("Hello " + message);
+        greetService.sayMessage("world");
+    }
+
     /**
      * 方法引用
      * 1.构造器的引用：Supplier<Date> supplier = Date::new;
