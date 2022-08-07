@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns="http://baseframework.feng.com/schema/dream"
+            xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            xmlns:beans="http://www.springframework.org/schema/beans"
+            targetNamespace="http://baseframework.feng.com/schema/dream"
+            elementFormDefault="qualified"
+            attributeFormDefault="unqualified">
+
+    <xsd:import namespace="http://www.springframework.org/schema/beans" />
+
+
+    <xsd:complexType name="versionType">
+        <xsd:attribute name="version" type="xsd:string"/>
+        <xsd:attribute name="name" type="xsd:string" use="required"/>
+        <xsd:attribute name="commit" type="xsd:string"/>
+        <xsd:attribute name="buildTime" type="xsd:string"/>
+        <xsd:attribute name="branch" type="xsd:string"/>
+        <xsd:attribute name="buildVersion" type="xsd:string"/>
+    </xsd:complexType>
+
+    <xsd:element name="version" type="versionType"/>
+</xsd:schema>
