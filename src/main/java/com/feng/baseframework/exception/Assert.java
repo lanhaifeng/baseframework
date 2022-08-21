@@ -1,9 +1,7 @@
 package com.feng.baseframework.exception;
 
 import java.util.Objects;
-import java.util.function.BiPredicate;
-import java.util.function.Predicate;
-import java.util.function.Supplier;
+import java.util.function.*;
 
 /**
  * baseframework
@@ -20,6 +18,17 @@ public class Assert {
     public static <E extends RuntimeException> void state(boolean asserted, Supplier<E> exSupplier) {
         // 断言未通过
         if (!asserted) throw exSupplier.get();
+    }
+
+    public static <E extends RuntimeException, P> void state(boolean asserted, Function<P, E> exSupplier, P p) {
+        // 断言未通过
+        if (!asserted) throw exSupplier.apply(p);
+    }
+
+    public static <E extends RuntimeException, P1, P2> void state(boolean asserted, BiFunction<P1, P2, E> exSupplier,
+                                                                  P1 p1, P2 p2) {
+        // 断言未通过
+        if (!asserted) throw exSupplier.apply(p1, p2);
     }
 
     public static <T, E extends RuntimeException> void isTrue(T t, Predicate<T> verifier, Supplier<E> exSupplier) {
