@@ -2,6 +2,7 @@ package com.feng.baseframework.design;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
@@ -16,9 +17,9 @@ import java.util.function.Supplier;
 public class Builder<T> {
 
     /**
-     * 获取实例对象的方法引用
+     * 目标实例对象
      */
-    private final Supplier<T> instantiation;
+    private final T target;
 
     /**
      * 修改实例对象的方法引用
@@ -26,7 +27,13 @@ public class Builder<T> {
     private final List<Consumer<T>> modifiers = new ArrayList<>();
 
     private Builder(Supplier<T> instantiation) {
-        this.instantiation = instantiation;
+        Objects.requireNonNull(instantiation);
+        this.target = instantiation.get();
+    }
+
+    public Builder(T target) {
+        Objects.requireNonNull(target);
+        this.target = target;
     }
 
     /**
@@ -44,15 +51,27 @@ public class Builder<T> {
     /**
      *
      * 2022/8/21 12:55
+     * 静态方法，接收实例对象方法引用，构建一个Builder实例
+     *
+     * @author lanhaifeng
+     * @since 1.0
+     **/
+    public static <T> Builder<T> of(T instantiation) {
+        return new Builder<>(instantiation);
+    }
+
+    /**
+     *
+     * 2022/8/21 12:55
      * 执行构建，返回构建后的实例对象
      *
      * @author lanhaifeng
      * @since 1.0
      **/
     public T build() {
-        T value = instantiation.get();
-        modifiers.forEach(modify -> modify.accept(value));
-        return value;
+//        T value = instantiation.get();
+        modifiers.forEach(modify -> modify.accept(target));
+        return target;
     }
 
     /**
