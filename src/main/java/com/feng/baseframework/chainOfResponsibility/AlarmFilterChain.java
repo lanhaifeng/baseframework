@@ -2,7 +2,6 @@ package com.feng.baseframework.chainOfResponsibility;
 
 import com.feng.baseframework.model.Alarm;
 
-import javax.servlet.FilterChain;
 import java.util.ArrayList;
 import java.util.List;
 

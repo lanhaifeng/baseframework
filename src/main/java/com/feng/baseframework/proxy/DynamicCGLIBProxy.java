@@ -1,16 +1,11 @@
 package com.feng.baseframework.proxy;
 
-import com.feng.baseframework.service.UserService;
-import com.feng.baseframework.service.impl.UserServiceImpl;
 import net.sf.cglib.proxy.Callback;
 import net.sf.cglib.proxy.Enhancer;
-import net.sf.cglib.proxy.MethodInterceptor;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.lang.reflect.Proxy;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 

@@ -1,7 +1,6 @@
 package com.feng.baseframework.model;
 
 import org.apache.commons.lang.StringUtils;
-import org.springframework.data.solr.core.query.UpdateField;
 
 import java.io.Serializable;
 import java.util.ArrayList;

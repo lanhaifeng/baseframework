@@ -5,7 +5,6 @@ import com.feng.baseframework.constant.LogType;
 import com.feng.baseframework.util.DateUtil;
 import com.feng.baseframework.util.RuntimeInfoUtil;
 import org.apache.commons.lang.time.DateFormatUtils;
-import org.apache.commons.lang.time.DateUtils;
 
 import java.util.logging.Formatter;
 import java.util.logging.LogRecord;

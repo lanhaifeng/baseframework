@@ -1,8 +1,5 @@
 package com.feng.baseframework.util;
 
-import com.feng.baseframework.constant.LdapPropertyConfig;
-import org.apache.poi.ss.formula.functions.T;
-
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
