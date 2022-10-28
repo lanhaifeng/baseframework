@@ -2,6 +2,7 @@ package com.feng.baseframework.autoconfig;
 
 import com.feng.baseframework.util.FileUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.http.Header;
 import org.apache.http.config.Registry;
 import org.apache.http.config.RegistryBuilder;
 import org.apache.http.conn.socket.ConnectionSocketFactory;
@@ -9,11 +10,9 @@ import org.apache.http.conn.socket.PlainConnectionSocketFactory;
 import org.apache.http.conn.ssl.NoopHostnameVerifier;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.conn.ssl.TrustStrategy;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.DefaultHttpRequestRetryHandler;
-import org.apache.http.impl.client.HttpClientBuilder;
-import org.apache.http.impl.client.HttpClients;
+import org.apache.http.impl.client.*;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
+import org.apache.http.message.BasicHeader;
 import org.apache.http.ssl.SSLContextBuilder;
 import org.apache.http.ssl.SSLContexts;
 import org.springframework.beans.factory.annotation.Value;
@@ -33,7 +32,6 @@ import org.springframework.web.client.RestOperations;
 import org.springframework.web.client.RestTemplate;
 
 import javax.net.ssl.*;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
@@ -45,6 +43,7 @@ import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @ProjectName: baseframework
@@ -164,12 +163,24 @@ public class RestTemplateConfiguration {
         SSLContext sslContext = SSLContexts.custom().loadTrustMaterial(null, acceptingTrustStrategy).build();
         SSLConnectionSocketFactory connectionSocketFactory = new SSLConnectionSocketFactory(sslContext, new NoopHostnameVerifier());
 
-        HttpClientBuilder httpClientBuilder = HttpClients.custom();
-        httpClientBuilder.setSSLSocketFactory(connectionSocketFactory);
-        CloseableHttpClient httpClient = httpClientBuilder.build();
+        CloseableHttpClient httpClient = HttpClientBuilder.create()
+                // 最大连接数
+                .setMaxConnTotal(1000)
+                // 同路由并发数
+                .setMaxConnPerRoute(400)
+                .evictExpiredConnections()
+                //空闲连接时间
+                .evictIdleConnections(5000, TimeUnit.MILLISECONDS)
+                //保活策略
+                .setKeepAliveStrategy(new DefaultConnectionKeepAliveStrategy())
+                .setSSLSocketFactory(connectionSocketFactory)
+                .build();
+
         HttpComponentsClientHttpRequestFactory factory = new HttpComponentsClientHttpRequestFactory();
         factory.setHttpClient(httpClient);
+        //连接超时时间
         factory.setConnectTimeout(3000);
+        //读写超时时间
         factory.setReadTimeout(180000);
 
         return factory;
