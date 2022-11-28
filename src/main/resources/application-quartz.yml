@@ -1,0 +1,48 @@
+org:
+    quartz:
+        #数据源配置
+        dataSource:
+            qzDS:
+                URL: jdbc:mysql://127.0.0.1:3306/test?characterEncoding=UTF-8&useSSL=true&serverTimezone=UTC
+                driver: com.mysql.cj.jdbc.Driver
+                password: root
+                user: root
+                validationQuery: select 0 from dual
+                provider: org.quartz.utils.C3p0PoolingConnectionProvider
+        #持久化配置
+        jobStore:
+            #数据源
+            dataSource: qzDS
+            useProperties: "true"
+            #获取trigger的时候是否上锁，默认false采用乐观锁，但有可能出现ABA导致重复调度
+            acquireTriggersWithinLock: "true"
+            #数据保存方式为数据库持久化
+            class: org.quartz.impl.jdbcjobstore.JobStoreTX
+            #数据库代理类，一般org.quartz.impl.jdbcjobstore.StdJDBCDelegate可以满足大部分数据库
+            driverDelegateClass: org.quartz.impl.jdbcjobstore.StdJDBCDelegate
+            #数据表的前缀，默认QRTZ_
+            tablePrefix: QRTZ_
+            #是否以集群方式运行
+            isClustered: "true"
+            #最大能忍受的触发超时时间
+            misfireThreshold: "60000"
+            #调度实例失效的检查时间间隔，单位毫秒
+            clusterCheckinInterval: "10000"
+        scheduler:
+            #调度器实例编号自动生成
+            instanceId: AUTO
+            #调度器实例名称
+            instanceName: MyScheduler
+            #是否跳过Quartz版本更新检查。如果检查并且找到更新，则会在Quartz的日志中报告它。生产部署要禁止
+            wrapJobExecutionInUserTransaction: "false"
+        threadPool:
+            #线程池的实现类
+            class: org.quartz.simpl.SimpleThreadPool
+            #线程池中的线程数量
+            threadCount: "10"
+            #线程优先级
+            threadPriority: "5"
+            #配置是否启动自动加载数据库内的定时任务，默认true
+            threadsInheritContextClassLoaderOfInitializingThread: "true"
+            #配置为守护线程
+            makeThreadsDaemons: "true"

@@ -1,0 +1,81 @@
+c3p0:
+    acquireIncrement: 3
+    acquireRetryAttempts: 30
+    acquireRetryDelay: 1000
+    breakAfterAcquireFailure: false
+    driverClass: com.mysql.cj.jdbc.Driver
+    idleConnectionTestPeriod: 60
+    initialPoolSize: 10
+    jdbcUrl: jdbc:mysql://127.0.0.1:3306/test?characterEncoding=UTF-8&useSSL=true&serverTimezone=UTC
+    maxIdleTime: 1800000
+    maxPoolSize: 100
+    maxStatements: 1000
+    minPoolSize: 10
+    password: root
+    testConnectionOnCheckin: false
+    testConnectionOnCheckout: false
+    user: root
+management:
+    health:
+        ldap:
+            enabled: false
+        redis:
+            enabled: false
+        solr:
+            enabled: false
+security:
+    mode: NO_AUTHENTICATION
+server:
+    port: 8088
+    ssl:
+        enabled: false
+spring:
+    activemq:
+        broker-url: tcp://192.168.230.24:61615?wireFormat.maxInactivityDuration=0&wireFormat.maxInactivityDurationInitalDelay=30000
+        in-memory: false
+        pool:
+            enabled: true
+            expiry-timeout: 0
+            idle-timeout: 30000
+            max-connections: 10
+    data:
+        solr:
+            host: http://192.168.230.211:8983/solr
+    devtools:
+        restart:
+            additional-paths: src/main/java
+            enabled: true
+    https:
+        ciphers: TLS_RSA_WITH_AES_128_CBC_SHA,TLS_RSA_WITH_AES_128_CBC_SHA256,TLS_RSA_WITH_AES_128_GCM_SHA256
+        key-file: ssl/client.keystore
+        key-password: ENC(RcDFSzw8dO1sY7b1BZf77tXxgMGf/e78)
+        key-store-password: ENC(RcDFSzw8dO1sY7b1BZf77tXxgMGf/e78)
+        mutual-authentication: false
+        ssl-protocols: TLSv1
+        trust-file: ssl/trust_certs.keystore
+        trust-password: ENC(CwDb29eqWC7qf9U3YAzyttB3Li44bw0R)
+        trust-server: true
+    ldap:
+        base:
+            dc: dc=mchz,dc=com
+        password: hzmcdba
+        real:
+            user:
+                pricipal:
+                    name: displayName
+        url: ldap://192.168.230.81:389/
+        user:
+            name: cn=admin,dc=mchz,dc=com
+            pricipal:
+                name: displayName
+    redis:
+        database: 2
+        host: 127.0.0.1
+        password: ENC(ld/L7FY0NWWBKhxLMKQ6yZorEYCy8W5EkCjLSTB01575tRWmq+RbfE+FDAtZ0FAr)
+        pool:
+            max-active: 8
+            max-idle: 8
+            max-wait: -1
+            min-idle: 0
+        port: 18379
+        timeout: 5000

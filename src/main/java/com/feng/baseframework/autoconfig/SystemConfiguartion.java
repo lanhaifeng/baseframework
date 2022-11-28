@@ -13,6 +13,7 @@ import org.springframework.aop.support.annotation.AnnotationMatchingPointcut;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.embedded.EmbeddedServletContainerFactory;
 import org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletContainerFactory;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.*;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
@@ -37,6 +38,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 // 启动注解事务管理，等同于xml配置方式的 <tx:annotation-driven />
 @EnableTransactionManagement
 @ComponentScan("com.feng.baseframework")
+@EnableConfigurationProperties({QuartzProperties.class})
 public class SystemConfiguartion {
 
     @Bean
