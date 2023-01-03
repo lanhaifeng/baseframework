@@ -38,53 +38,45 @@ public class RegularExpressionTest {
             System.out.println(matcher.group(7));//'
         }
     }
-    
-    @Test
-    public void testPattern2() throws JsonProcessingException {
-        String input = "AND   \"$应用程序名\"   = 'MYSQL TOMCAT' AND    \"$应用程序名\" in ('tom cat','tmp') OR     \"$应用程序名\" not  in ('tomcat','tmp')";
-        String regex = "(\\s*(AND|OR)\\s*)(\"[$]\\S+\\s*)(=\\s+|in\\s+|not\\s+in\\s+)";
-        Pattern pattern = Pattern.compile(regex);
-        Matcher matcher = pattern.matcher(input);
-        AdvanceExpression advanceExpression = null;
-        List<AdvanceExpression> advanceExpressions = new ArrayList<>();
-        while (matcher.find()){
-            advanceExpression = new AdvanceExpression();
-            advanceExpression.setOperaSymbol(matcher.group(1).trim());
-            advanceExpression.setKey(matcher.group(3).trim().replaceAll("\"","").replaceAll("[$]",""));
-            advanceExpression.setConditionType(matcher.group(4).trim());
-            advanceExpressions.add(advanceExpression);
 
-            /*System.out.println(matcher.groupCount());
-            System.out.println(matcher.group(0));//AND   "$应用程序名"   = '
-            System.out.println(matcher.group(1));//AND  有空格
-            System.out.println(matcher.group(2));//AND无空格
-            System.out.println(matcher.group(3));//"$应用程序名"
-            System.out.println(matcher.group(4));//=
-            System.out.println(matcher.group(5));//('tomcat','tmp')
-            System.out.println(matcher.group(6));//
-            System.out.println(matcher.group(7));//'*/
+    @Test
+    public void testAppend(){
+        String REGEX = "a*b";
+        String INPUT = "caabfooaabfooabfoobkkk";
+        String REPLACE = "-";
+        Pattern p = Pattern.compile(REGEX);
+        // 获取 matcher 对象
+        Matcher m = p.matcher(INPUT);
+        StringBuffer sb = new StringBuffer();
+        while(m.find()) {
+            m.appendReplacement(sb, REPLACE);
+            System.out.println(sb.toString());
         }
-        input = matcher.replaceAll("\"");
-        if(input.startsWith("\"")){
-            input = input.substring(1);
-        }
-        if(input.endsWith("\"")){
-            input = input.substring(0,input.length()-1);
-        }
-        String[] inputArray = input.split("\\\"");
-        for(int i=0;i<inputArray.length;i++){
-            String value = inputArray[i];
-            if("=".equals(advanceExpressions.get(i).getConditionType())){
-                if(value.startsWith("'")){
-                    value = value.substring(1);
-                }
-                if(value.endsWith("'")){
-                    value = value.substring(0,value.length()-1);
-                }
+        System.out.println(sb.toString());
+        System.out.println(Matcher.quoteReplacement("adasdf\\ds$sdf$saf\\sd"));
+        System.out.println(Matcher.quoteReplacement("$"));
+        System.out.println("adasdf\\ds$sdf$saf\\sd".charAt(6));
+        System.out.println("adasdf\\ds$sdf$saf\\sd".charAt(9)=='$');
+        sb = new StringBuffer();
+        m.appendTail(sb);
+        System.out.println(sb.toString());
+
+        System.getProperties().list(System.out);
+    }
+
+    @Test
+    public void testGroup(){
+        String version = "4.5.6";
+        Pattern pattern =  Pattern.compile("\\d+\\.\\d+");
+        Matcher matcher = pattern.matcher(version);
+        String verValue = "V未知";
+        if(matcher.find()){
+            String ver = matcher.group();
+            if(null != ver && ver.length() > 0){
+                verValue = "V"+ver;
             }
-            advanceExpressions.get(i).setValue(value);
         }
-        ObjectMapper objectMapper = new ObjectMapper();
-        System.out.println(objectMapper.writeValueAsString(advanceExpressions));
+
+        System.out.println(verValue);
     }
 }

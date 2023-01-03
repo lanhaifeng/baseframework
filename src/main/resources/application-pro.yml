@@ -1,0 +1,62 @@
+c3p0:
+    acquireIncrement: 3
+    acquireRetryAttempts: 30
+    acquireRetryDelay: 1000
+    breakAfterAcquireFailure: false
+    driverClass: com.mysql.cj.jdbc.Driver
+    idleConnectionTestPeriod: 60
+    initialPoolSize: 10
+    jdbcUrl: jdbc:mysql://127.0.0.1:3306/test?characterEncoding=UTF-8&useSSL=true&serverTimezone=UTC
+    maxIdleTime: 1800000
+    maxPoolSize: 100
+    maxStatements: 1000
+    minPoolSize: 10
+    password: ENC(GCkaNJCr+sX78r2hfbhIww==)
+    testConnectionOnCheckin: false
+    testConnectionOnCheckout: false
+    user: ENC(+4Rr/QHFQyVDQHX0fOIaqg==)
+security:
+    mode: CUSTOM_AUTHENTICATION
+server:
+    ssl:
+        client-auth: need
+        enabled: true
+spring:
+    data:
+        solr:
+            host: http://127.0.0.1:8983/solr
+    https:
+        ciphers: TLS_RSA_WITH_AES_128_CBC_SHA,TLS_RSA_WITH_AES_128_CBC_SHA256,TLS_RSA_WITH_AES_128_GCM_SHA256
+        key-file: ssl/client.keystore
+        key-password: ENC(Q3dBBNzILKMS/PqEWPVnDSKpmJsapKBT)
+        key-store-password: ENC(Q3dBBNzILKMS/PqEWPVnDSKpmJsapKBT)
+        mutual-authentication: true
+        redirectPort: true
+        ssl-protocols: TLSv1
+        trust-file: ssl/trust_certs.keystore
+        trust-password: ENC(q07XRP+gZf3fjb3nQ+vaRSaONUxeJEdD)
+        trust-server: false
+    ldap:
+        base:
+            dc: dc=example,dc=org
+        password: admin1
+        real:
+            user:
+                pricipal:
+                    name: displayName
+        url: ldap://192.168.99.100:389/
+        user:
+            name: cn=admin,dc=example,dc=org
+            pricipal:
+                name: displayName
+    redis:
+        database: 2
+        host: 127.0.0.1
+        password: ENC(QrUtbc2067zavK8neEJ53SrFaTEBZ/IhOspNltY9kUkFya5cfwXGzKl0zxuF0Hmr)
+        pool:
+            max-active: 8
+            max-idle: 8
+            max-wait: -1
+            min-idle: 0
+        port: 18379
+        timeout: 5000

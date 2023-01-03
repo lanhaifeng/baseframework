@@ -1,0 +1,28 @@
+template header
+seq
+condition
+content
+
+
+package com.feng.baseframework.mydrools
+import com.feng.baseframework.model.User;
+import function com.feng.baseframework.util.RegexUtil.regexSql
+global java.util.List users;
+
+
+
+
+template "tp"
+
+rule "@{row.rowNumber}"
+salience @{seq}
+
+	when
+		@{condition}
+	then
+		@{content}
+
+end
+
+
+end template

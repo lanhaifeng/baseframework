@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>logout</title>
+</head>
+
+<body>
+    <p>spring boot logout!</p>
+</body>
+</html>

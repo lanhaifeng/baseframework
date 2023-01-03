@@ -1,0 +1,21 @@
+[{
+  "linkSessionID": 12140931780686746161,
+  "SQLSessionID": "20181119172506923207",
+  "token": "",
+  "eUser": "",
+  "eUserID": "",
+  "eUserName": "",
+  "certName": "",
+  "dbWorkMode": 5,
+  "content": {
+    "riskEngine": [{
+      "matched": ["BEGIN DBMS_OUTPUT.GET_LINE ( 1 , 2 ) ; END;"],
+      "riskClass": "2",
+      "riskLevel": 0,
+      "auditLevel": 0,
+      "actionLevel": 0,
+      "ruleId": 2021000050000001901,
+      "ruleName": "[SQL白名单]2021000050000001/subrule"
+    }]
+  }
+}]

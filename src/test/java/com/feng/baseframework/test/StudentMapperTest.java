@@ -60,7 +60,7 @@ public class StudentMapperTest extends BaseFrameworkApplicationTest {
         studentMapper.updateStudent(student);
         Student temp = studentMapper.getStudentById(id);
         Assert.assertEquals("姓名没有变化,更新失败",student.getName(),temp.getName());
-        Assert.assertEquals("年龄没有变化,更新失败",student.getAge(),temp.getAge());
+        Assert.assertEquals("年龄没有变化,更新失败",student.getAgeTest(),temp.getAgeTest());
     }
 
     @Test

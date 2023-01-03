@@ -63,4 +63,16 @@ public class SpringUtil implements ApplicationContextAware {
     public static <T> T getBeanByNameAndType(String name,Class<T> clazz){
         return getApplicationContext().getBean(name, clazz);
     }
+
+    /**
+     * 2019/02/18 16:09
+     * 获取当前环境
+     *
+     * @param
+     * @author lanhaifeng
+     * @return java.lang.String
+     */
+    public static String getActiveProfile() {
+        return applicationContext.getEnvironment().getActiveProfiles()[0];
+    }
 }

@@ -23,7 +23,15 @@ public enum ResultEnum {
     PARAM_CACHE_ERROR(8,"参数缓存失效"),
     PARAM_SEARCHID_NULL(9,"参数searchId为空"),
     JACKSON_PARSE_ERROR(10,"jackson转化失败"),
+    ACCESS_DENY_ERROR(11,"不允许访问"),
+    REFERER_ERROR(12,"防盗链"),
+    PARAM_ILLEGAL_ERROR(13,"参数非法"),
+    /**
+     * 非法job
+     */
+    ILLEGAL_JOB_ERROR(14, "非法job，无法正常执行"),
     RESPONSE_RESULT_ERROR(503, "服务当前无法处理请求")
+
     ;
 
     private Integer code;

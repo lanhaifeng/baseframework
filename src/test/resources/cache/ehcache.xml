@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ehcache name="ehcache" updateCheck="false">
+	<diskStore path="E:\\temp1" />
+
+	<defaultCache
+			eternal="false"
+			maxElementsInMemory="10000"
+			overflowToDisk="false"
+			diskPersistent="false"
+			timeToIdleSeconds="300"
+			timeToLiveSeconds="0"
+			memoryStoreEvictionPolicy="LRU" />
+
+	<cache
+			name="ehcache"
+			eternal="false"
+			maxElementsInMemory="1000"
+			overflowToDisk="false"
+			diskPersistent="true"
+			timeToIdleSeconds="300"
+			timeToLiveSeconds="0"
+			memoryStoreEvictionPolicy="LRU" />
+</ehcache>

@@ -33,7 +33,7 @@ public class MyUserDetails extends User implements UserDetails {
         }
         StringBuilder commaBuilder = new StringBuilder();
         for(UserRole role : roles){
-            commaBuilder.append(role.getRole()).append(",");
+            commaBuilder.append(role.getRoleId()).append(",");
         }
         String authorities = commaBuilder.substring(0,commaBuilder.length()-1);
         return AuthorityUtils.commaSeparatedStringToAuthorityList(authorities);

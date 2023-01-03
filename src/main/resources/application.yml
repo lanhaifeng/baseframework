@@ -1,0 +1,35 @@
+management:
+    security:
+        enabled: false
+mybatis:
+    mapper-locations: classpath*:com/baseframework/**/mapper/*Mapper.xml
+    type-aliases-package: com.feng.baseframework.**.domain
+server:
+    context-path: /
+    port: 1443
+    session:
+        timeout: 1800
+    ssl:
+        client-auth: need
+        enabled: true
+        key-password: ENC(06oVMh0T4/wK50UR4vvurcByrNXqc/dV)
+        key-store: classpath:ssl/server.keystore
+        key-store-password: ENC(06oVMh0T4/wK50UR4vvurcByrNXqc/dV)
+        keyAlias: server
+        keyStoreType: JKS
+        trust-store: classpath:ssl/trust_certs.keystore
+        trust-store-password: ENC(YPHQcwxbMWQI3dPhRzttGzYwQxlybDo7)
+        trust-store-type: JKS
+spring:
+    messages:
+        basename: i18n/messages
+    profiles:
+        active: pro,kafka,quartz
+    security:
+        salt: feng
+    thymeleaf:
+        cache: false
+        content-type: text/html
+        mode: LEGACYHTML5
+        prefix: classpath:/templates/
+        suffix: .thym

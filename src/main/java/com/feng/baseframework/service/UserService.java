@@ -1,6 +1,9 @@
 package com.feng.baseframework.service;
 
+import com.feng.baseframework.annotation.ClassLevelAdviceTag;
+import com.feng.baseframework.annotation.CustomOnProfileCondition;
 import com.feng.baseframework.model.User;
+import org.hibernate.validator.constraints.NotEmpty;
 
 import java.util.List;
 
@@ -14,6 +17,8 @@ import java.util.List;
  * @UpdateRemark:
  * @Version: 1.0
  */
+@CustomOnProfileCondition
+@ClassLevelAdviceTag
 public interface UserService {
     public User addUser(User user);
 
@@ -25,5 +30,7 @@ public interface UserService {
 
     public User getUserById(Integer id);
 
+    @CustomOnProfileCondition
+    @NotEmpty
     public User getUserByName(String userName);
 }

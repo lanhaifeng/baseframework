@@ -15,6 +15,6 @@ import org.springframework.context.annotation.Configuration;
  * @Version:        1.0
  */
 @Configuration
-@MapperScan(basePackages = {"com.feng.baseframework.**"})
+@MapperScan(basePackages = {"com.feng.baseframework.mapper.**"})
 public class MybatisConfiguration {
 }

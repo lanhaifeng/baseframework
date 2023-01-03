@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:bridge="http://baseframework.feng.com/schema/dream"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dream="http://baseframework.feng.com/schema/dream"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://baseframework.feng.com/schema/dream
+       http://baseframework.feng.com/schema/dream.xsd">
+
+    <dream:version
+                   name="myVersion"
+                   version="1.0"
+                   commit="adfad"
+                   buildTime="2022-01-01 11:11:11"
+                   branch="v1.0"
+                   buildVersion="v1.2"/>
+</beans>

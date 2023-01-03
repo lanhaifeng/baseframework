@@ -1,5 +1,7 @@
 package com.feng.baseframework.util;
 
+import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
+
 import java.security.MessageDigest;
 
 /**
@@ -36,5 +38,20 @@ public class MD5Util {
         }
         return hexValue.toString();
 
+    }
+
+    public static String password2MD5(String password){
+        Md5PasswordEncoder md5PasswordEncoder = new Md5PasswordEncoder();
+        return md5PasswordEncoder.encodePassword(password,null);
+    }
+
+    public static String password2MD5(String password, Object salt){
+        Md5PasswordEncoder md5PasswordEncoder = new Md5PasswordEncoder();
+        return md5PasswordEncoder.encodePassword(password,salt);
+    }
+
+    public static void main(String[] args) {
+        System.out.println(password2MD5("audit"));
+        System.out.println(password2MD5("audit","hzmcAudit_12F"));
     }
 }

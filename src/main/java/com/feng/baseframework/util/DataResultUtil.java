@@ -12,20 +12,20 @@ import com.feng.baseframework.model.DataResult;
  * @UpdateRemark:
  **/
 public class DataResultUtil {
-    public static DataResult success(Object object) {
-        DataResult result = new DataResult();
+    public static <T> DataResult<T> success(T t) {
+        DataResult<T> result = new DataResult<>();
         result.setCode(0);
         result.setMessage("成功");
-        result.setData(object);
+        result.setData(t);
         return result;
     }
 
-    public static DataResult success() {
+    public static <T> DataResult<T> success() {
         return success(null);
     }
 
-    public static DataResult error(Integer code, String mssage) {
-        DataResult result = new DataResult();
+    public static <T> DataResult<T> error(Integer code, String mssage) {
+        DataResult<T> result = new DataResult<T>();
         result.setCode(code);
         result.setMessage(mssage);
         return result;

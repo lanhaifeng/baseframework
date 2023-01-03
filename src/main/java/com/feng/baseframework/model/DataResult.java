@@ -1,5 +1,7 @@
 package com.feng.baseframework.model;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 /**
  * @ProjectName: svc-search-biz
  * @description: 数据结果实体对象
@@ -9,6 +11,7 @@ package com.feng.baseframework.model;
  * @UpdateDate: 2018/5/2 16:55
  * @UpdateRemark:
  **/
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class DataResult<T> implements java.io.Serializable{
     /** 错误码. */
     private Integer code;

@@ -9,6 +9,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.feng.baseframework.constant.ResultEnum;
 import com.feng.baseframework.exception.BusinessException;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -26,6 +27,10 @@ import java.util.Map;
  **/
 public class JacksonUtil {
     private static ObjectMapper objectMapper = new ObjectMapper();
+
+    static {
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+    }
 
     private JacksonUtil() {
     }
@@ -85,12 +90,48 @@ public class JacksonUtil {
 
     /**
      * @author: lanhaifeng
+     * @description json 转JavaBean
+     * @date: 2018/5/16 19:28
+     * @param jsonString
+     * @param clazz
+     * @return T
+     */
+    public static <T> T json2pojo(String jsonString, JavaType javaType) {
+        try {
+            objectMapper.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
+            return objectMapper.readValue(jsonString, javaType);
+        } catch (IOException e) {
+            throw new BusinessException(ResultEnum.JACKSON_PARSE_ERROR,e);
+        }
+    }
+
+    /**
+     * @author: lanhaifeng
+     * @description json 转JavaBean
+     * @date: 2018/5/16 19:28
+     * @param jsonString
+     * @param clazz
+     * @return T
+     */
+    public static <T> T json2pojo(String jsonString, TypeReference typeReference) {
+        try {
+            objectMapper.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
+            objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+            return objectMapper.readValue(jsonString, typeReference);
+        } catch (IOException e) {
+            throw new BusinessException(ResultEnum.JACKSON_PARSE_ERROR,e);
+        }
+    }
+
+
+    /**
+     * @author: lanhaifeng
      * @description json字符串转换为map
      * @date: 2018/5/16 19:28
      * @param jsonString
      * @return java.util.Map<java.lang.String,java.lang.Object>
      */
-    public static <T> Map<String, Object> json2map(String jsonString) {
+    public static <T> Map<String, T> json2map(String jsonString) {
         try {
             ObjectMapper mapper = new ObjectMapper();
             mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
@@ -267,5 +308,15 @@ public class JacksonUtil {
      */
     public static <T> T obj2pojo(Object obj, Class<T> clazz) {
         return objectMapper.convertValue(obj, clazz);
+    }
+
+    /**
+     * 读取json文件数据
+     * @param path
+     * @return
+     */
+    public static String getJsonFromFile(String path) throws IOException {
+        File file = FileUtils.getFileByRelativePath(path);
+        return org.apache.commons.io.FileUtils.readFileToString(file, "UTF-8");
     }
 }
