@@ -22,7 +22,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>1.8</java.version>
-		<drools.version>7.0.0.Final</drools.version>
+		<drools.version>7.60.0.Final</drools.version>
 		<solr.version>2.1.8.RELEASE</solr.version>
 		<mockito.version>2.8.47</mockito.version>
         <lombok.version>1.16.20</lombok.version>
