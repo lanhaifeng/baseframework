@@ -1,16 +1,19 @@
 package com.feng.baseframework.spring;
 
 import com.feng.baseframework.common.JunitBaseTest;
+import com.feng.baseframework.model.User;
 import com.feng.baseframework.util.FileUtils;
 import com.feng.baseframework.util.SpringUtil;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.core.io.support.ResourcePatternResolver;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.io.IOException;
 import java.util.*;
@@ -30,6 +33,9 @@ public class SpringTest extends JunitBaseTest {
     //@Autowired(required = false)
     //会报错，提示没有对应BeanDefinition
     private ApplicationContextAware applicationContextAware;
+
+    @Autowired(required = false)
+    private JdbcTemplate jdbcTemplate;
 
     @Test
     public void testIgnoreDependencyInterface(){
@@ -99,5 +105,22 @@ public class SpringTest extends JunitBaseTest {
         System.out.println(fileName.substring(0, fileName.lastIndexOf("sql") - 1));
         System.out.println("0.0.1".compareTo("1.0.0"));
         System.out.println("0.0.2".compareTo("0.0.1"));
+    }
+
+    @Test
+    public void batchDatas() {
+        String sql = "insert into base_user(`name`, `user_name`, `password`) values(?,?,?)";
+        List<Object[]> users = new ArrayList<>();
+        for (int i = 0; i < 100; i++) {
+            String name = "name" + i;
+            for (int j = 0; j < 10000; j++) {
+                String userName = "userName" + j;
+                Object[] obj = {name, userName, "test"};
+                users.add(obj);
+            }
+        }
+        for (int i = 0; i < 10000; i++) {
+            jdbcTemplate.batchUpdate(sql, users.subList(i*100, i*100 + 100));
+        }
     }
 }
