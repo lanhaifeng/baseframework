@@ -1,6 +1,11 @@
-.idea
 target
 .mvn
 mvnw
 mvnw.cmd
 /com/
+
+# IntelliJ project files
+.idea
+*.iml
+out
+gen
