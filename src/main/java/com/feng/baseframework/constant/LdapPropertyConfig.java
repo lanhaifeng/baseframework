@@ -3,10 +3,10 @@ package com.feng.baseframework.constant;
 import com.feng.baseframework.model.EntityBase;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import javax.validation.constraints.NotEmpty;
 import java.util.List;
 
 /**

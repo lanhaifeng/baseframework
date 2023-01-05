@@ -1,12 +1,13 @@
 package com.feng.baseframework.controller;
 
 import com.feng.baseframework.spring.SpElHandler;
-import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.validation.constraints.NotEmpty;
 
 /**
  * 类名:SpElController <br/>

@@ -3,10 +3,13 @@ package com.feng.baseframework.listener;
 import com.feng.baseframework.autoconfig.SystemPropertyInit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.ConfigurableBootstrapContext;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.SpringApplicationRunListener;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.env.ConfigurableEnvironment;
+
+import java.time.Duration;
 
 /**
  * baseframework
@@ -25,13 +28,13 @@ public class MyApplicationRunListener implements SpringApplicationRunListener {
 	}
 
 	@Override
-	public void starting() {
+	public void starting(ConfigurableBootstrapContext bootstrapContext) {
 		logger.info("application starting");
 		SystemPropertyInit.initSystemProperty();
 	}
 
 	@Override
-	public void environmentPrepared(ConfigurableEnvironment configurableEnvironment) {
+	public void environmentPrepared(ConfigurableBootstrapContext bootstrapContext, ConfigurableEnvironment environment) {
 		logger.info("application environmentPrepared");
 	}
 
@@ -46,7 +49,7 @@ public class MyApplicationRunListener implements SpringApplicationRunListener {
 	}
 
 	@Override
-	public void finished(ConfigurableApplicationContext configurableApplicationContext, Throwable throwable) {
+	public void started(ConfigurableApplicationContext context, Duration timeTaken) {
 		logger.info("application finished");
 	}
 }

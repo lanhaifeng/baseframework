@@ -12,7 +12,6 @@ import com.feng.baseframework.exception.BusinessException;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -113,7 +112,7 @@ public class JacksonUtil {
      * @param clazz
      * @return T
      */
-    public static <T> T json2pojo(String jsonString, TypeReference typeReference) {
+    public static <T> T json2pojo(String jsonString, TypeReference<T> typeReference) {
         try {
             objectMapper.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
             objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
@@ -136,28 +135,6 @@ public class JacksonUtil {
             ObjectMapper mapper = new ObjectMapper();
             mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
             return mapper.readValue(jsonString, Map.class);
-        } catch (IOException e) {
-            throw new BusinessException(ResultEnum.JACKSON_PARSE_ERROR,e);
-        }
-    }
-
-    /**
-     * @author: lanhaifeng
-     * @description json字符串转换为map
-     * @date: 2018/5/16 19:29
-     * @param jsonString
-     * @param clazz
-     * @return java.util.Map<java.lang.String,T>
-     */
-    public static <T> Map<String, T> json2map(String jsonString, Class<T> clazz) {
-        try {
-            Map<String, Map<String, Object>> map = objectMapper.readValue(jsonString, new TypeReference<Map<String, T>>() {
-            });
-            Map<String, T> result = new HashMap<String, T>();
-            for (Map.Entry<String, Map<String, Object>> entry : map.entrySet()) {
-                result.put(entry.getKey(), map2pojo(entry.getValue(), clazz));
-            }
-            return result;
         } catch (IOException e) {
             throw new BusinessException(ResultEnum.JACKSON_PARSE_ERROR,e);
         }

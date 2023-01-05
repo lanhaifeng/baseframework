@@ -3,11 +3,9 @@ package com.feng.baseframework.messageConverter;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.feng.baseframework.model.JsonpProxy;
-import org.apache.commons.lang.StringUtils;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.AbstractJackson2HttpMessageConverter;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
-import org.springframework.http.converter.json.MappingJacksonValue;
 
 import java.io.IOException;
 
@@ -34,15 +32,13 @@ public class JavaScriptMessageConverter extends AbstractJackson2HttpMessageConve
         super(objectMapper, new MediaType("application","javascript"));
     }
 
+    @Override
     protected void writePrefix(JsonGenerator generator, Object object) throws IOException {
         if (this.jsonPrefix != null) {
             generator.writeRaw(this.jsonPrefix);
         }
 
         String jsonpFunction = object instanceof JsonpProxy  ? ((JsonpProxy)object).getJsonpFunction() : null;
-        if(StringUtils.isBlank(jsonpFunction)){
-            jsonpFunction = object instanceof MappingJacksonValue  ? ((MappingJacksonValue)object).getJsonpFunction() : null;
-        }
         if (jsonpFunction != null) {
             generator.writeRaw("/**/");
             generator.writeRaw(jsonpFunction + "(");
@@ -50,11 +46,9 @@ public class JavaScriptMessageConverter extends AbstractJackson2HttpMessageConve
 
     }
 
+    @Override
     protected void writeSuffix(JsonGenerator generator, Object object) throws IOException {
         String jsonpFunction = object instanceof JsonpProxy ? ((JsonpProxy)object).getJsonpFunction() : null;
-        if(StringUtils.isBlank(jsonpFunction)){
-            jsonpFunction = object instanceof MappingJacksonValue  ? ((MappingJacksonValue)object).getJsonpFunction() : null;
-        }
         if (jsonpFunction != null) {
             generator.writeRaw(");");
         }

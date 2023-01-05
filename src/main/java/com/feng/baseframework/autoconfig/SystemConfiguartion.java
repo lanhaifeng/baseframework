@@ -11,9 +11,8 @@ import org.apache.tomcat.util.descriptor.web.SecurityConstraint;
 import org.springframework.aop.support.DefaultPointcutAdvisor;
 import org.springframework.aop.support.annotation.AnnotationMatchingPointcut;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.boot.context.embedded.EmbeddedServletContainerFactory;
-import org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletContainerFactory;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
 import org.springframework.context.annotation.*;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
@@ -62,7 +61,8 @@ public class SystemConfiguartion {
         return connector;
     }
 
-    /*@Bean
+    @Bean
+    @ConditionalOnProperty(prefix = "spring.https", name = "redirectPort", havingValue = "true")
     public TomcatServletWebServerFactory tomcatServletWebServerFactory(Connector connector){
         TomcatServletWebServerFactory tomcat = new TomcatServletWebServerFactory(){
             @Override
@@ -77,9 +77,9 @@ public class SystemConfiguartion {
         };
         tomcat.addAdditionalTomcatConnectors(connector);
         return tomcat;
-    }*/
+    }
 
-    @Bean
+    /*@Bean
     @ConditionalOnProperty(prefix = "spring.https", name = "redirectPort", havingValue = "true")
     public EmbeddedServletContainerFactory servletContainerFactory(){
         TomcatEmbeddedServletContainerFactory containerFactory = new TomcatEmbeddedServletContainerFactory(){
@@ -97,7 +97,7 @@ public class SystemConfiguartion {
         };
         containerFactory.addAdditionalTomcatConnectors(connector());
         return containerFactory;
-    }
+    }*/
 
     @Bean
     public DefaultPointcutAdvisor defaultPointcutAdvisor(){

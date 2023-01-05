@@ -3,8 +3,8 @@ package com.feng.baseframework.service;
 import com.feng.baseframework.annotation.ClassLevelAdviceTag;
 import com.feng.baseframework.annotation.CustomOnProfileCondition;
 import com.feng.baseframework.model.User;
-import org.hibernate.validator.constraints.NotEmpty;
 
+import javax.validation.constraints.NotEmpty;
 import java.util.List;
 
 /**

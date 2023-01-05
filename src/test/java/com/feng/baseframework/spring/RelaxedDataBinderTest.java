@@ -2,15 +2,16 @@ package com.feng.baseframework.spring;
 
 import com.feng.baseframework.model.KeyStoreParam;
 import org.junit.Test;
-import org.springframework.beans.MutablePropertyValues;
-import org.springframework.beans.PropertyValues;
-import org.springframework.boot.bind.RelaxedDataBinder;
+import org.springframework.boot.context.properties.bind.BindResult;
+import org.springframework.boot.context.properties.bind.Bindable;
+import org.springframework.boot.context.properties.bind.Binder;
+import org.springframework.boot.context.properties.source.ConfigurationPropertySources;
+import org.springframework.boot.env.PropertiesPropertySourceLoader;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 
 import java.io.IOException;
-import java.util.Properties;
 
 /**
  * baseframework
@@ -27,29 +28,28 @@ public class RelaxedDataBinderTest {
 		KeyStoreParam keyStoreParam = new KeyStoreParam();
 		keyStoreParam.setCity("city");
 		keyStoreParam.setFilePath("file");
-		RelaxedDataBinder binder = new RelaxedDataBinder(keyStoreParam, "base.test");
 
 		ResourceLoader resourceLoader = new DefaultResourceLoader();
 		Resource resource = resourceLoader.getResource("classpath:application-dev1.properties");
-		Properties properties = new Properties();
-		properties.load(resource.getInputStream());
-		PropertyValues pvs = new MutablePropertyValues(properties);
-		binder.bind(pvs);
+		PropertiesPropertySourceLoader propertiesPropertySourceLoader = new PropertiesPropertySourceLoader();
+
+		new Binder(ConfigurationPropertySources.from(
+				propertiesPropertySourceLoader.load("dev", resource)))
+				.bind("base.test", Bindable.ofInstance(keyStoreParam));
 
 		System.out.println(keyStoreParam);
 	}
 
 	@Test
 	public void binderTest2() throws IOException {
-		Teacher teacher = new Teacher();
-
-		RelaxedDataBinder binder = new RelaxedDataBinder(teacher, "teacher.test");
 		ResourceLoader resourceLoader = new DefaultResourceLoader();
 		Resource resource = resourceLoader.getResource("classpath:application-dev1.properties");
-		Properties properties = new Properties();
-		properties.load(resource.getInputStream());
-		PropertyValues pvs = new MutablePropertyValues(properties);
-		binder.bind(pvs);
+		PropertiesPropertySourceLoader propertiesPropertySourceLoader = new PropertiesPropertySourceLoader();
+
+		BindResult<Teacher> bindResult = new Binder(ConfigurationPropertySources.from(
+				propertiesPropertySourceLoader.load("dev", resource)))
+				.bind("teacher.test", Teacher.class);
+		Teacher teacher = bindResult.get();
 
 		System.out.println(teacher);
 	}

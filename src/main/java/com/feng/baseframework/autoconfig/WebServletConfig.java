@@ -4,10 +4,8 @@ import com.feng.baseframework.interceptor.SimpleHandlerInterceptor;
 import com.feng.baseframework.listener.OnlineUserListener;
 import com.feng.baseframework.messageConverter.JavaScriptMessageConverter;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.embedded.ConfigurableEmbeddedServletContainer;
-import org.springframework.boot.context.embedded.EmbeddedServletContainerCustomizer;
-import org.springframework.boot.context.embedded.InitParameterConfiguringServletContextInitializer;
-import org.springframework.boot.web.servlet.ErrorPage;
+import org.springframework.boot.web.server.ErrorPage;
+import org.springframework.boot.web.server.ErrorPageRegistrar;
 import org.springframework.boot.web.servlet.ServletComponentScan;
 import org.springframework.boot.web.servlet.ServletContextInitializer;
 import org.springframework.context.annotation.Bean;
@@ -18,13 +16,11 @@ import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.util.WebAppRootListener;
 
 import javax.servlet.ServletContext;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * baseframework
@@ -37,7 +33,7 @@ import java.util.Map;
  **/
 @Configuration
 @ServletComponentScan("com.feng.baseframework")
-public class WebServletConfig extends WebMvcConfigurerAdapter {
+public class WebServletConfig implements WebMvcConfigurer {
 
     @Autowired
     private WebApplicationContext webApplicationConnect;
@@ -74,33 +70,21 @@ public class WebServletConfig extends WebMvcConfigurerAdapter {
         return new OnlineUserListener();
     }
 
-    //配置错误页
     @Bean
-    public EmbeddedServletContainerCustomizer webServerFactoryCustomizer() {
-        return new EmbeddedServletContainerCustomizer() {
-            @Override
-            public void customize(ConfigurableEmbeddedServletContainer configurableEmbeddedServletContainer) {
-                // 对嵌入式servlet容器的配置
-                // factory.setPort(8081);
-                /* 注意：new ErrorPage(stat, path);中path必须是页面名称，并且必须“/”开始。
-                    底层调用了String.java中如下方法：
-                    public boolean startsWith(String prefix) {
-                        return startsWith(prefix, 0);
-                    }*/
-                ErrorPage errorPage400 = new ErrorPage(HttpStatus.BAD_REQUEST,
-                        "/error-400");
-                ErrorPage errorPage403 = new ErrorPage(HttpStatus.FORBIDDEN,
-                        "/error-403");
-                ErrorPage errorPage404 = new ErrorPage(HttpStatus.NOT_FOUND,
-                        "/error-404");
-                ErrorPage errorPage500 = new ErrorPage(HttpStatus.INTERNAL_SERVER_ERROR,
-                        "/error-500");
-                ErrorPage errorPageNull = new ErrorPage(NullPointerException.class,
-                        "/baseError");
-                configurableEmbeddedServletContainer.addErrorPages(errorPage400, errorPage403, errorPage404,
-                        errorPage500, errorPageNull);
-                configurableEmbeddedServletContainer.addInitializers(servletContextInitializer());
-            }
+    public ErrorPageRegistrar errorPageRegistrar() {
+        return registry -> {
+            ErrorPage errorPage400 = new ErrorPage(HttpStatus.BAD_REQUEST,
+                    "/error-400");
+            ErrorPage errorPage403 = new ErrorPage(HttpStatus.FORBIDDEN,
+                    "/error-403");
+            ErrorPage errorPage404 = new ErrorPage(HttpStatus.NOT_FOUND,
+                    "/error-404");
+            ErrorPage errorPage500 = new ErrorPage(HttpStatus.INTERNAL_SERVER_ERROR,
+                    "/error-500");
+            ErrorPage errorPageNull = new ErrorPage(NullPointerException.class,
+                    "/baseError");
+            registry.addErrorPages(errorPage400, errorPage403, errorPage404,
+                    errorPage500, errorPageNull);
         };
     }
 
@@ -119,9 +103,11 @@ public class WebServletConfig extends WebMvcConfigurerAdapter {
      *      <param-value>600000</param-value>
      * </context-param>
      */
+    @Bean
     public ServletContextInitializer servletContextInitializer(){
-        Map<String, String> contextParams = new HashMap<>();
-        contextParams.put("ServletContext-test", "ServletContext-test");
-        return new InitParameterConfiguringServletContextInitializer(contextParams);
+        return servletContext -> {
+            servletContext.setInitParameter("ServletContext-test", "ServletContext-test");
+            servletContext.setInitParameter("ServletContext-name", "ServletContext-name");
+        };
     }
 }
