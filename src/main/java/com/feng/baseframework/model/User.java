@@ -1,10 +1,13 @@
 package com.feng.baseframework.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import org.apache.commons.lang.StringUtils;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -84,6 +87,12 @@ public class User implements Serializable, Cloneable,Comparable<User> {
     private String name;
     private String password;
 
+    private Date startTime;
+
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private Date endTime;
+
     private List<String> ids = new ArrayList<>();
 
     public void addId(String id){
@@ -128,6 +137,22 @@ public class User implements Serializable, Cloneable,Comparable<User> {
         this.password = password;
     }
 
+    public Date getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(Date startTime) {
+        this.startTime = startTime;
+    }
+
+    public Date getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(Date endTime) {
+        this.endTime = endTime;
+    }
+
     @Override
     public User clone() throws CloneNotSupportedException {
         return (User)super.clone();
@@ -135,11 +160,13 @@ public class User implements Serializable, Cloneable,Comparable<User> {
 
     public String toBeanString() {
         return "User{" +
-                "id=" + ( id == null ? "" : id) +
-                ", userName='" + ( userName == null ? "" : userName ) + '\'' +
-                ", name='" + ( name == null ? ""  : name ) + '\'' +
-                ", password='" + ( password == null ? ""  : password ) + '\'' +
+                "id=" + id +
+                ", userName='" + userName + '\'' +
+                ", name='" + name + '\'' +
+                ", password='" + password + '\'' +
+                ", startTime=" + startTime +
+                ", endTime=" + endTime +
+                ", ids=" + ids +
                 '}';
     }
-
 }
