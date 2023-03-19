@@ -1,11 +1,10 @@
 package com.feng.baseframework.controller;
 
+import com.feng.baseframework.model.JsonpProxy;
 import com.feng.baseframework.model.User;
-import org.hibernate.validator.constraints.NotEmpty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
@@ -15,6 +14,7 @@ import org.springframework.web.context.WebApplicationContext;
 
 import javax.servlet.ServletContext;
 import javax.validation.Valid;
+import javax.validation.constraints.NotEmpty;
 import java.util.List;
 
 /**
@@ -102,13 +102,13 @@ public class BaseController extends ClassFilterController {
     }
 
     @GetMapping(value = "/baseManage/jsonp1", produces = "application/javascript;charset=UTF-8")
-    public MappingJacksonValue jsonp1(String callback){
+    public JsonpProxy jsonp1(String callback){
         User user = new User();
         user.setName("test");
-        MappingJacksonValue mjv = new MappingJacksonValue(user);
-        mjv.setJsonpFunction(callback);
+        JsonpProxy jsonpProxy = new JsonpProxy(user);
+        jsonpProxy.setJsonpFunction(callback);
 
-        return mjv;
+        return jsonpProxy;
     }
     @GetMapping(value = "/baseManage/jsonp2", produces = "application/javascript;charset=UTF-8")
     public User jsonp2(){

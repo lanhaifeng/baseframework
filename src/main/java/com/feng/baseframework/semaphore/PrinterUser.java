@@ -1,7 +1,6 @@
 package com.feng.baseframework.semaphore;
 
-import org.hibernate.validator.constraints.NotEmpty;
-
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 /**

@@ -35,7 +35,7 @@ public class KafkaController {
 		kafkaTemplate.send(topic, message);
 	}
 
-	@KafkaListener(group = "${spring.kafka.consumer.group-id}", topics="#{'${spring.kafka.consumer.topic}'.split(',')}")
+	@KafkaListener(groupId = "${spring.kafka.consumer.group-id}", topics="#{'${spring.kafka.consumer.topic}'.split(',')}")
 	public void listen(ConsumerRecord<String, String> msg){
 		logger.info(msg.toString());
 	}

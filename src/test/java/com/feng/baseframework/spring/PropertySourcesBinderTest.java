@@ -2,14 +2,12 @@ package com.feng.baseframework.spring;
 
 import org.junit.Test;
 import org.springframework.beans.MutablePropertyValues;
-import org.springframework.beans.PropertyValue;
-import org.springframework.beans.PropertyValues;
-import org.springframework.boot.bind.PropertySourcesBinder;
-import org.springframework.boot.bind.PropertySourcesPropertyValues;
-import org.springframework.core.env.Environment;
+import org.springframework.boot.context.properties.bind.Bindable;
+import org.springframework.boot.context.properties.bind.Binder;
+import org.springframework.boot.context.properties.source.ConfigurationPropertySources;
 import org.springframework.core.env.MutablePropertySources;
 import org.springframework.core.env.PropertiesPropertySource;
-import org.springframework.core.env.PropertySources;
+import org.springframework.core.env.PropertySourcesPropertyResolver;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
@@ -47,13 +45,25 @@ public class PropertySourcesBinderTest {
 		MutablePropertySources pvs = new MutablePropertySources();
 		pvs.addFirst(propertySource1);
 		pvs.addAfter("bind1", propertySource2);
-		PropertySourcesBinder binder = new PropertySourcesBinder(pvs);
+
+		//替换${}
+		Properties source = new Properties();
+		PropertiesPropertySource mergeSource = new PropertiesPropertySource("mergeSource", source);
+		PropertySourcesPropertyResolver propertySourcesPropertyResolver = new PropertySourcesPropertyResolver(pvs);
+		for (String propertyName : propertySource1.getPropertyNames()) {
+			source.setProperty(propertyName, propertySourcesPropertyResolver.getProperty(propertyName));
+		}
+		for (String propertyName : propertySource2.getPropertyNames()) {
+			source.setProperty(propertyName, propertySourcesPropertyResolver.getProperty(propertyName));
+		}
+
+		Binder binder = new Binder(ConfigurationPropertySources.from(mergeSource));
 
 		DataSourceTest dataSource1 = new DataSourceTest();
-		binder.bindTo("ds.datasource", dataSource1);
+		binder.bind("ds.datasource", Bindable.ofInstance(dataSource1));
 
 		DataSourceTest dataSource2 = new DataSourceTest();
-		binder.bindTo("upgrade.datasource", dataSource2);
+		binder.bind("upgrade.datasource", Bindable.ofInstance(dataSource2));
 
 		DataSourceTest dataSource3 = new DataSourceTest();
 		DataBinder dataBinder = new WebDataBinder(dataSource3);

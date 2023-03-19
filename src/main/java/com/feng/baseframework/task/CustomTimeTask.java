@@ -1,9 +1,9 @@
 package com.feng.baseframework.task;
 
 import com.feng.baseframework.util.ValidateUtils;
-import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.scheduling.support.CronSequenceGenerator;
 
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.List;

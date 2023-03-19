@@ -1,7 +1,8 @@
 package com.feng.baseframework.util;
 
-import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
+import org.apache.commons.codec.digest.Md5Crypt;
 
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 
 /**
@@ -41,17 +42,22 @@ public class MD5Util {
     }
 
     public static String password2MD5(String password){
-        Md5PasswordEncoder md5PasswordEncoder = new Md5PasswordEncoder();
-        return md5PasswordEncoder.encodePassword(password,null);
+        return Md5Crypt.md5Crypt(password.getBytes(StandardCharsets.UTF_8));
     }
 
-    public static String password2MD5(String password, Object salt){
-        Md5PasswordEncoder md5PasswordEncoder = new Md5PasswordEncoder();
-        return md5PasswordEncoder.encodePassword(password,salt);
+    public static String password2MD5(String password, String salt){
+        String pre = "$1$";
+        if(!salt.startsWith(pre)) {
+            salt = pre + salt;
+        }
+        return Md5Crypt.md5Crypt(password.getBytes(StandardCharsets.UTF_8), salt);
     }
 
-    public static void main(String[] args) {
-        System.out.println(password2MD5("audit"));
-        System.out.println(password2MD5("audit","hzmcAudit_12F"));
+    public static String password2Apr1(String password){
+        return Md5Crypt.apr1Crypt(password.getBytes(StandardCharsets.UTF_8));
+    }
+
+    public static String password2Apr1(String password, String salt){
+        return Md5Crypt.apr1Crypt(password.getBytes(StandardCharsets.UTF_8), salt);
     }
 }

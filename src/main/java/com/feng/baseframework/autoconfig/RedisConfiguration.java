@@ -36,9 +36,8 @@ import java.util.List;
 @Configuration
 public class RedisConfiguration {
     @Bean
-    public CacheManager cacheManager(RedisTemplate<?, ?> redisTemplate) {
-        CacheManager cacheManager = new RedisCacheManager(redisTemplate);
-        return cacheManager;
+    public CacheManager cacheManager(RedisConnectionFactory connectionFactory) {
+        return RedisCacheManager.create(connectionFactory);
     }
 
     @Bean
