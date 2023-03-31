@@ -668,27 +668,14 @@
 					<source>1.8</source>
 					<target>1.8</target>
 					<encoding>utf-8</encoding>
-					<compilerId>groovy-eclipse-compiler</compilerId>
 					<verbose>true</verbose>
 					<fork>true</fork>
 					<compilerArguments>
 						<verbose/>
 						<bootclasspath>${JAVA_HOME}/jre/lib/rt.jar${path.separator}${JAVA_HOME}/jre/lib/jce.jar${path.separator}${JAVA_HOME}/lib/tools.jar</bootclasspath>
-						<javaAgentClass>lombok.launch.Agent</javaAgentClass>
 					</compilerArguments>
 				</configuration>
 				<dependencies>
-					<dependency>
-						<groupId>org.codehaus.groovy</groupId>
-						<artifactId>groovy-eclipse-compiler</artifactId>
-						<version>2.9.1-01</version>
-					</dependency>
-					<!-- for 2.8.0-01 and later you must have an explicit dependency on groovy-eclipse-batch -->
-					<dependency>
-						<groupId>org.codehaus.groovy</groupId>
-						<artifactId>groovy-eclipse-batch</artifactId>
-						<version>2.3.7-01</version>
-					</dependency>
 					<dependency>
 						<groupId>org.projectlombok</groupId>
 						<artifactId>lombok</artifactId>
