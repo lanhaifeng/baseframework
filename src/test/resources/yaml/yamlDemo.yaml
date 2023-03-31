@@ -1,10 +1,177 @@
-name: demo
-desc: this is desc
-items:
-    - name: item
-      desc: item desc
-    - name: item2
-      desc: desc2
-hobbys:
-    - eat
-    - read
+#服务相关配置
+server:
+  #  address: 0.0.0.0
+  port: 9090
+spring:
+  #数据源配置
+  datasource:
+    #数据库连接串   allowMultiQueries=true 实现sql批量插入需要该配置
+    url: jdbc:mysql://10.100.0.8:3306/davinci?characterEncoding=UTF-8&useSSL=false&allowMultiQueries=true
+    #数据库连接用户名
+    username: davinci
+    #数据库连接密码
+    password: davinci
+    #数据库连接驱动类
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  kafka:
+    #kafka集群地址：127.0.0.1:9092,127.0.0.1:9094
+    bootstrap-servers: 10.100.0.8:9092
+    #消费者配置
+    consumer:
+      #分组标识
+      group-id: davinci
+      #true自动提交
+      enable-auto-commit: true
+      #自动提交时间间隔
+      auto-commit-interval: 1000
+      #当无法获取消费分区的位移时从何处开始消费
+      #earliest：表示自动重置到 partition 的最小 offset
+      #latest：默认为 latest，表示自动重置到 partition 的最大 offset
+      #none：不自动进行 offset 重置，抛出 OffsetOutOfRangeException 异常
+      auto-offset-reset: latest
+      #流水主题名
+      dfp-record-topic: flow-record
+      #并发数，与分区保持一致
+      concurrency: 1
+      #内存中队列最大容量
+      max-queue-count: 10000
+        #认证配置通过启动参数传递认证信息
+        #普通认证：-Djava.security.auth.login.config=/usr/kafka_client_jaas.conf
+        #kerberos认证：-Djava.security.krb5.conf=D:\data\krb5.conf -Djava.security.auth.login.config=/usr/kafka_client_jaas.conf
+        #security:
+      #protocol: SASL_PLAINTEXT
+    #客户端标识
+    client-id: davinci
+  #es配置
+  elasticsearch:
+    rest:
+      #es集群地址：127.0.0.1:9200,127.0.0.1:9400
+      uris: 10.100.0.8:9200
+      #认证信息
+      username:
+      password:
+      #连接超时时间
+      connection-timeout: 1s
+      #读取超时时间
+      read-timeout: 5s
+
+#日志文件配置
+logging:
+  config: ./logback.xml
+
+#设备画像配置
+dfp.davinci:
+  #运行模式
+  run-mode: product
+  #要与指纹解析中dfp.request.header.defined配置对应，默认为Cdn-Src-Ip
+  network-header: Cdn-Src-Ip
+  #预警配置
+  warn-config:
+    #运维预警相关配置
+    ops-warn-config:
+      #系统预警
+      system-warn:
+        #预警的key,要唯一   cpu预警
+        - key: cpu
+          #预警的阈值，单位是%,大于该value时就会触发预警
+          value: 90
+          #预警的类型，每个类型对应不同的处理策略
+          type: cpu
+          #系统预警的预警编码每个key的code要唯一
+          code: warn_10001
+          # 内存预警
+        - key: memory
+          value: 80
+          type: memory
+          code: warn_10002
+          # 磁盘预警
+        - key: disk
+          value: 80
+          type: disk
+          code: warn_10003
+      # 网络预警
+      server-warn:
+        # 配置需要预警的服务名
+        - key: kafka
+          # 配置需要预警的Ip和端口  格式： ip:port
+          value: 10.100.0.8:9092
+          # telnet网络预警的类型(服务预警的type统一为telnet)
+          type: telnet
+          # 请求超时时间（时间不要配置的太短）  单位ms
+          timeout: 5000
+          # 服务预警的预警编码
+          code: warn_1004
+  # es-搜索相关配置
+  device-search:
+    #设备索引名前缀，默认device
+    #device-index-pre: device
+    #流水索引名前缀，默认dfp
+    device-record-index-pre: dfp-flow
+    # 设备探索：单一规则最大条件数量
+    max-feature-size: 100
+    # 设备探索：组合规则最大条件数量
+    max-rule-size: 20
+  #并发读指纹流水线程数，与kafka分区保持一致
+  concurrent-read-device-count: 1
+  #设备并发写线程数
+  concurrent-write-device-count: 1
+  #最大批量写数量
+  max-batch-write-size: 2000
+  #最大写间隔时间
+  max-write-interval-time: 1000
+  #设备存储是否分索引
+  sub-device-index-Switch: false
+  #字段索引是否单独存储keyword
+  keyword-switch: false
+  #规则管理配置
+  rule-mgr-config:
+    # 同步全量规则接口地址(规则中包含指标数据)
+    rule-url: http://10.100.0.9:9070/flow/rule/info
+    # 同步单个规则接口地址  参数：{ruleCode}  示例：http://127.0.0.1:9070/flow/rule/query/rule_isMulti
+    feature-url: http://10.100.0.9:9070/flow/rule/query/
+  # 流水开关
+  record-enable: true
+  # 上传文件路径
+  upload-dir: upload
+  # 静态资源,替换为前端资源目录，不要忘记最后以文件分隔符结尾
+  static-locations:
+    - file:../dist/
+  # api配置
+  api-mgr-config:
+    enable-api: device
+    enable: true
+    # 过滤数据的key名
+    # 方式一：配置json第一级名字，如：mixRiskMessage，只会移除掉第一级名字为mixRiskMessage
+    # 方式二：配置json多级名字，层级之间用.分割，如：riskLabels.features，只会移除掉第一级名字为riskLabels，第二级名字为features的节点
+    # 方式三：配置第一级后模糊匹配，如：BIZ*，移除第一级名字以BIZ开头的节点，如BIZtest
+#    filter-keys:
+#      - mixRiskMessage
+#      - riskLabels.features
+#      - groupUuids
+#      - BIZ*
+#  corr-analy-config:
+#    # 保留数据的key名
+#    feature-include-keys:
+#      - node
+
+public:
+  #redis地址,缓存使用redis时需要配置
+  redis:
+    #单节点/集群模式配置可以写多个，多个之间用逗号分隔
+    addr: 10.100.0.8:6379
+    # 主从模式主从模式配置主节点名
+    #master: mymaster
+    #主从模式下配置可以写多个，多个之间用逗号分隔
+    #nodes: 127.0.0.1:6379,127.0.0.1:6379
+    #redis的密码
+    password: passwd
+
+
+jwt:
+  antMatchers: /login/**,/register/**,/static/**,/j_spring_security_check,/about/version,/authToken,/rs/search/query,/user/info/*,/login.html,/rs/sd/engine/subscription,/sockjs/webSocketServer/**,
+    /rs/sd/subscribe/simulation/binary/download,/rs/sd/subscribe/assets/download,/pa/openapi,/rs/user/saveIp,
+    /rs/sd/engine/getEventAliveEngine,/rs/sd/engine/simulation/getEventAliveEngine,
+    /rs/sd/engine/getEventAliveEngineV2,/actuator/**,/pa/openapi/**,/flow/**,
+    /user/info/*,/rs/generalfunction/checkcode,/rs/generalfunction/mailcode,/rs/generalfunction/phonecode,/rs/logo/get,/rs/logo/getinfo,/rs/portal/menuapi/changeMenuResourceStatus,
+    /rs/generalfunction/get,/rs/generalfunction/getCurrentErrorCount,/login.html,/login2.html,/doc.html,/swagger-ui.html,/rs/logo/picture,/menuapi/**,/rs/package/binary/download,/changePwd,/webjars/**,
+    /swagger-resources/**,/v2/**,/js/*,/css/*,/fonts/*,/favicon.ico,/globalMgr/about,/apiMgr/**

@@ -17,6 +17,24 @@ propertiesFactoryBean.afterPropertiesSet();
 properties = propertiesFactoryBean.getObject();
 ```
 
+### snakeyaml
+导入依赖
+```text
+<dependency>
+    <groupId>org.yaml</groupId>
+    <artifactId>snakeyaml</artifactId>
+    <version>1.23</version>
+</dependency>
+```
+使用
+```text
+Yaml yaml=new Yaml();
+Map<String, Object> map = yaml.load(getClass().getClassLoader().getResourceAsStream("yaml/yamlDemo.yaml"));
+Properties properties = yaml.loadAs(
+getClass().getClassLoader().getResourceAsStream("yaml/yamlDemo.yaml"),
+ Properties.class);
+```
+
 ### PropertiesPropertySourceLoader
 ```text
 ResourceLoader resourceLoader = new DefaultResourceLoader();
