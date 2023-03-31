@@ -2,17 +2,14 @@ package com.feng.baseframework.spring;
 
 import com.feng.baseframework.common.MockitoBaseTest;
 import com.feng.baseframework.util.YamlParser;
-import org.codehaus.groovy.util.ListHashMap;
 import org.junit.Test;
 import org.springframework.beans.factory.config.YamlPropertiesFactoryBean;
 import org.springframework.core.io.ClassPathResource;
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
-import java.util.stream.Collectors;
 
 /**
  * 测试yaml解析
