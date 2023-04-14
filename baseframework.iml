@@ -304,6 +304,11 @@
     <orderEntry type="library" name="Maven: com.github.javaparser:javaparser-core:3.6.16" level="project" />
     <orderEntry type="library" name="Maven: org.freemarker:freemarker:2.3.31" level="project" />
     <orderEntry type="library" name="Maven: org.quartz-scheduler:quartz:2.3.0" level="project" />
+    <orderEntry type="library" name="Maven: com.artofsolving:jodconverter:2.2.1" level="project" />
+    <orderEntry type="library" name="Maven: org.openoffice:juh:2.3.0" level="project" />
+    <orderEntry type="library" name="Maven: org.openoffice:jurt:2.3.0" level="project" />
+    <orderEntry type="library" name="Maven: org.openoffice:ridl:2.3.0" level="project" />
+    <orderEntry type="library" name="Maven: org.openoffice:unoil:2.3.0" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: net.minidev:json-smart:2.3.1" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: net.minidev:accessors-smart:2.3.1" level="project" />
   </component>

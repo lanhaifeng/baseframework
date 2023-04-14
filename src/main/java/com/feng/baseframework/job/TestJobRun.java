@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class TestJobRun {
 
-    @JobScheduler(cron = "0/3 * * * * ?", desc = "测试定时任务")
+    @JobScheduler(cron = "* 0/3 * * * ?", desc = "测试定时任务")
     public void timeExecute() {
         System.out.println("test job execute!");
     }

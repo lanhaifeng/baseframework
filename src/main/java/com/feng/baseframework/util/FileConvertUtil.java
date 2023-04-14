@@ -13,6 +13,7 @@ import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
+import java.nio.file.Files;
 
 /**
  * baseframework
@@ -20,22 +21,34 @@ import java.net.URLConnection;
  * 文件格式转换工具类
  *
  * @author lanhaifeng
- * @since
+ * @since  v2.0
  **/
 public class FileConvertUtil {
     /** 默认转换后文件后缀 */
     private static final String DEFAULT_SUFFIX = "pdf";
-    /** openoffice_port */
+    /** openoffice host */
+    private static final String OPENOFFICE_HOST = "10.100.1.67";
+    /** openoffice port */
     private static final Integer OPENOFFICE_PORT = 8100;
 
-    /**      * 方法描述 office文档转换为PDF(处理本地文件)      *      * @param sourcePath 源文件路径      * @param suffix     源文件后缀      * @return InputStream 转换后文件输入流      */
+    /**
+     * 方法描述 office文档转换为PDF(处理本地文件)
+     * @param sourcePath 源文件路径
+     * @param suffix     源文件后缀
+     * @return InputStream 转换后文件输入流
+     */
     public static InputStream convertLocaleFile(String sourcePath, String suffix) throws Exception {
         File inputFile = new File(sourcePath);
-        InputStream inputStream = new FileInputStream(inputFile);
+        InputStream inputStream = Files.newInputStream(inputFile.toPath());
         return covertCommonByStream(inputStream, suffix);
     }
 
-    /**      * 方法描述  office文档转换为PDF(处理网络文件)      *      * @param netFileUrl 网络文件路径      * @param suffix     文件后缀      * @return InputStream 转换后文件输入流      */
+    /**
+     * 方法描述  office文档转换为PDF(处理网络文件)
+     * @param netFileUrl 网络文件路径
+     * @param suffix     文件后缀
+     * @return InputStream 转换后文件输入流
+     */
     public static InputStream convertNetFile(String netFileUrl, String suffix) throws Exception {
         // 创建URL
         URL url = new URL(netFileUrl);
@@ -60,7 +73,7 @@ public class FileConvertUtil {
      */
     public static InputStream covertCommonByStream(InputStream inputStream, String suffix) throws Exception {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
-        OpenOfficeConnection connection = new SocketOpenOfficeConnection(OPENOFFICE_PORT);
+        OpenOfficeConnection connection = new SocketOpenOfficeConnection(OPENOFFICE_HOST, OPENOFFICE_PORT);
         connection.connect();
         DocumentConverter converter = new StreamOpenOfficeDocumentConverter(connection);
         DefaultDocumentFormatRegistry formatReg = new DefaultDocumentFormatRegistry();
@@ -71,14 +84,11 @@ public class FileConvertUtil {
         return outputStreamConvertInputStream(out);
     }
 
-    /**      * 方法描述 outputStream转inputStream      */
-    public static ByteArrayInputStream outputStreamConvertInputStream(final OutputStream out) throws Exception {
+    /**
+     * 方法描述 outputStream转inputStream
+     */
+    public static ByteArrayInputStream outputStreamConvertInputStream(final OutputStream out) {
         ByteArrayOutputStream baos=(ByteArrayOutputStream) out;
         return new ByteArrayInputStream(baos.toByteArray());
-    }
-
-    public static void main(String[] args) throws IOException {
-        //convertNetFile("http://172.16.10.21/files/home/upload/department/base/201912090541573c6abdf2394d4ae3b7049dcee456d4f7.doc", ".pdf");
-        //convert("c:/Users/admin/Desktop/2.pdf", "c:/Users/admin/Desktop/3.pdf");
     }
 }
