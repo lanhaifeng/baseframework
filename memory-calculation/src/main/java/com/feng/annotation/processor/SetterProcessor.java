@@ -1,6 +1,6 @@
-package com.feng.baseframework.processor;
+package com.feng.annotation.processor;
 
-import com.feng.baseframework.annotation.Setter;
+import com.feng.annotation.Setter;
 import com.sun.source.tree.Tree;
 import com.sun.tools.javac.api.JavacTrees;
 import com.sun.tools.javac.code.Flags;
@@ -26,9 +26,9 @@ import java.util.Set;
  * @apiNote 时间:2023/1/4 18:17创建:SetterProcessor
  * @since v2.0.0
  */
-@SupportedAnnotationTypes("com.feng.baseframework.annotation.Setter")
+@SupportedAnnotationTypes("com.feng.annotation.Setter")
+@SupportedSourceVersion(SourceVersion.RELEASE_8)
 public class SetterProcessor extends AbstractProcessor {
-
     private Messager messager;
 
     private JavacTrees trees;
@@ -55,6 +55,7 @@ public class SetterProcessor extends AbstractProcessor {
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
         Set<? extends Element> set = roundEnv.getElementsAnnotatedWith(Setter.class);
+        System.out.println("test setter");
 
         set.forEach(element -> {
             JCTree jcTree = trees.getTree(element);

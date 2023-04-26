@@ -1,6 +1,6 @@
 package com.feng.baseframework.model;
 
-import com.feng.baseframework.annotation.Setter;
+import com.feng.annotation.Setter;
 
 import java.io.Serializable;
 

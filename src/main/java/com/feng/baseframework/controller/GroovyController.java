@@ -1,6 +1,5 @@
 package com.feng.baseframework.controller;
 
-import com.feng.baseframework.groovy.MonitorBean;
 import groovy.lang.GroovyClassLoader;
 import groovy.lang.GroovyObject;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,11 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("groovyBeanRegistry")
 public class GroovyController {
-
-    @RequestMapping(path = "printBeans", method = RequestMethod.GET)
-    public void printBeans(){
-        MonitorBean.printBeans();
-    }
 
     @RequestMapping(path = "printBeansGroovyClassLoader", method = RequestMethod.GET)
     public void printBeansGroovyClassLoader() throws IllegalAccessException, InstantiationException {
