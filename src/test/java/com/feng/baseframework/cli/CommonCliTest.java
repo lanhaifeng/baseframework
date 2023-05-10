@@ -20,6 +20,7 @@ public class CommonCliTest {
         //当第二参数是true时，可以是这样的参数  -Otest
         options.addOption("O",true,"you can set a value after the O");
         Option c = Option.builder("c")  //option的名字,判断的时候要使用这个名字
+                .longOpt("filename")           //长名字，可以通过cmd.getOptionValue("filename")获取
                 .required(false)               //是否必须有这个选项
                 .hasArg()                         //带一个参数
                 .argName("filename")     //参数的名字
