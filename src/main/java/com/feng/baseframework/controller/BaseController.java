@@ -1,10 +1,14 @@
 package com.feng.baseframework.controller;
 
+import com.feng.baseframework.BaseframeworkApplication;
 import com.feng.baseframework.model.JsonpProxy;
 import com.feng.baseframework.model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.ApplicationArguments;
+import org.springframework.boot.SpringApplication;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
@@ -12,6 +16,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.WebApplicationContext;
 
+import javax.annotation.Resource;
 import javax.servlet.ServletContext;
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
@@ -32,6 +37,8 @@ public class BaseController extends ClassFilterController {
     private Logger logger = LoggerFactory.getLogger(getClass());
     @Autowired
     private WebApplicationContext webApplicationContext;
+    @Resource
+    private ConfigurableApplicationContext context;
 
     /**
      * 描述: 返回根目录<br/>
@@ -116,5 +123,23 @@ public class BaseController extends ClassFilterController {
         user.setName("test");
 
         return user;
+    }
+
+    @PutMapping(value = "/baseManage/liveReload")
+    public void liveReload(){
+        ApplicationArguments args = context.getBean(ApplicationArguments.class);
+
+        Thread thread = new Thread(() -> {
+            context.close();
+            try {
+                Thread.sleep(5000L);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+            context = SpringApplication.run(BaseframeworkApplication.class, args.getSourceArgs());
+        });
+
+        thread.setDaemon(false);
+        thread.start();
     }
 }
