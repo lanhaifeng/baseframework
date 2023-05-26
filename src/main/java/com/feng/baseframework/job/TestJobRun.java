@@ -1,5 +1,7 @@
 package com.feng.baseframework.job;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 /**
@@ -13,8 +15,10 @@ import org.springframework.stereotype.Component;
 @Component
 public class TestJobRun {
 
-    @JobScheduler(cron = "* 0/3 * * * ?", desc = "测试定时任务")
+    private final Logger logger = LoggerFactory.getLogger(getClass());
+
+    @JobScheduler(cron = "* 0 0/3 * * ?", desc = "测试定时任务")
     public void timeExecute() {
-        System.out.println("test job execute!");
+        logger.info("test job execute!");
     }
 }

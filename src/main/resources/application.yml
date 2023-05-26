@@ -24,7 +24,7 @@ spring:
     messages:
         basename: i18n/messages
     profiles:
-        active: pro,kafka,quartz
+        active: dev,kafka,quartz
     security:
         salt: feng
     thymeleaf:
@@ -33,3 +33,8 @@ spring:
         mode: LEGACYHTML5
         prefix: classpath:/templates/
         suffix: .thym
+    main:
+        allow-circular-references: true
+    devtools:
+        remote:
+            secret: mysecret

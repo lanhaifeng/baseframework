@@ -30,6 +30,7 @@ public enum ResultEnum {
      * 非法job
      */
     ILLEGAL_JOB_ERROR(14, "非法job，无法正常执行"),
+    ATTACH_JVM_ERROR(15, "无法attach目标jvm"),
     RESPONSE_RESULT_ERROR(503, "服务当前无法处理请求")
 
     ;

@@ -718,6 +718,7 @@
 					</excludes>
 					<includeSystemScope>true</includeSystemScope>
 					<mainClass>com.feng.baseframework.BaseframeworkApplication</mainClass>
+					<excludeDevtools>false</excludeDevtools>
 				</configuration>
 			</plugin>
 			<plugin>
