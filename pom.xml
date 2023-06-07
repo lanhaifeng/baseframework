@@ -5,7 +5,7 @@
 
 	<groupId>com.feng</groupId>
 	<artifactId>baseframework</artifactId>
-	<version>2.0.0</version>
+	<version>3.0.0</version>
 	<packaging>jar</packaging>
 
 	<name>baseframework</name>
@@ -14,14 +14,14 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.7.6</version>
+		<version>3.1.0</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-		<java.version>1.8</java.version>
+		<java.version>17</java.version>
 		<drools.version>7.60.0.Final</drools.version>
 		<solr.version>2.1.8.RELEASE</solr.version>
 		<!--<mockito.version>2.8.47</mockito.version>-->
@@ -675,8 +675,8 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.10.1</version>
 				<configuration>
-					<source>1.8</source>
-					<target>1.8</target>
+					<source>17</source>
+					<target>17</target>
 					<encoding>utf-8</encoding>
 					<compilerArguments>
 						<bootclasspath>${JAVA_HOME}/jre/lib/rt.jar${path.separator}${JAVA_HOME}/jre/lib/jce.jar${path.separator}${JAVA_HOME}/lib/tools.jar</bootclasspath>
