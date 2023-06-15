@@ -27,7 +27,7 @@ import java.util.Set;
  * @since v2.0.0
  */
 @SupportedAnnotationTypes("com.feng.annotation.Setter")
-@SupportedSourceVersion(SourceVersion.RELEASE_8)
+@SupportedSourceVersion(SourceVersion.RELEASE_17)
 public class SetterProcessor extends AbstractProcessor {
     private Messager messager;
 
