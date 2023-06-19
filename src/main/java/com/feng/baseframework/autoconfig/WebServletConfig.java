@@ -19,7 +19,7 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.util.WebAppRootListener;
 
-import javax.servlet.ServletContext;
+import jakarta.servlet.ServletContext;
 import java.util.List;
 
 /**

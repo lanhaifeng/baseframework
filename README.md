@@ -13,3 +13,11 @@ spring boot练习项目,集成一些常用的框架
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
     }
 ```
+
+#### java17模块不可见
+java compiler
+```txt
+-parameters -bootclasspath D:\jdk_64_17.0.2/lib/jrt-fs.jar
+ --add-exports java.base/sun.security.x509=ALL-UNNAMED
+ --add-exports java.base/sun.security.tools.keytool=ALL-UNNAMED
+```

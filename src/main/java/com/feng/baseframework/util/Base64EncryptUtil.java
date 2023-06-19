@@ -1,12 +1,9 @@
 package com.feng.baseframework.util;
 
+import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import sun.misc.BASE64Decoder;
-import sun.misc.BASE64Encoder;
-
-import java.io.IOException;
 
 /**
  * baseframework
@@ -39,7 +36,7 @@ public class Base64EncryptUtil {
 	 */
 	public static String encode(byte[] bstr) {
 		try {
-			return new BASE64Encoder().encode(bstr);
+			return Base64.encodeBase64String(bstr);
 		} catch (Exception e) {
 			logger.error("编码失败：" + ExceptionUtils.getFullStackTrace(e));
 		}
@@ -55,10 +52,9 @@ public class Base64EncryptUtil {
 	public static String decode(String str) {
 		byte[] bt = null;
 		try {
-			BASE64Decoder decoder = new BASE64Decoder();
-			bt = decoder.decodeBuffer(str);
+			bt = Base64.decodeBase64(str);
 			return new String(bt);
-		} catch (IOException e) {
+		} catch (Exception e) {
 			logger.error("解码失败：" + ExceptionUtils.getFullStackTrace(e));
 			return "";
 		}
@@ -68,10 +64,9 @@ public class Base64EncryptUtil {
 	public static byte[] decodeToBytes(String str) {
 		byte[] bt = null;
 		try {
-			BASE64Decoder decoder = new BASE64Decoder();
-			bt = decoder.decodeBuffer(str);
+			bt = Base64.decodeBase64(str);
 			return bt;
-		} catch (IOException e) {
+		} catch (Exception e) {
 			logger.error("解码失败：" + ExceptionUtils.getFullStackTrace(e));
 			return null;
 		}

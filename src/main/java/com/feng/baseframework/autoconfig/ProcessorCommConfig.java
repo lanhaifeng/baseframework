@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Configuration;
 import sun.misc.Signal;
 import sun.misc.SignalHandler;
 
-import javax.annotation.PostConstruct;
+import jakarta.annotation.PostConstruct;
 import java.util.Locale;
 
 /**

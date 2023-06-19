@@ -1,10 +1,9 @@
 package com.feng.baseframework.task;
 
 import com.feng.baseframework.util.ValidateUtils;
-import org.springframework.scheduling.support.CronSequenceGenerator;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.List;
 import java.util.TimerTask;
@@ -20,7 +19,6 @@ import java.util.TimerTask;
 public class CustomTimeTask extends TimerTask {
 
 	private static final long serialVersionUID = 1954597707267521857L;
-	private CronSequenceGenerator sequenceGenerator;
 
 	@NotNull(message = "主键为空")
 	private Integer id;
@@ -102,7 +100,7 @@ public class CustomTimeTask extends TimerTask {
 	}
 
 	public void init(){
-		this.sequenceGenerator = new CronSequenceGenerator(cronExpression);
+
 	}
 
 	public boolean validate(){

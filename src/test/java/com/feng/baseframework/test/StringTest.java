@@ -6,8 +6,8 @@ import com.feng.baseframework.util.JacksonUtil;
 import com.feng.baseframework.util.StringUtil;
 import io.jsonwebtoken.lang.Assert;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.validator.routines.InetAddressValidator;
 import org.junit.Test;
-import sun.net.util.IPAddressUtil;
 
 import java.io.IOException;
 import java.text.DecimalFormat;
@@ -115,12 +115,13 @@ public class StringTest {
 
     @Test
     public void ipv6Test() {
-        Assert.state(IPAddressUtil.isIPv6LiteralAddress("2001::192:168:230:206"));
-        Assert.state(IPAddressUtil.isIPv6LiteralAddress("2002::192:168:230:211"));
-        Assert.state(IPAddressUtil.isIPv6LiteralAddress("2001:4860:4860::8888"));
-        Assert.state(IPAddressUtil.isIPv6LiteralAddress("2001:4860:4860::8888%mc1"));
-        Assert.state(IPAddressUtil.isIPv6LiteralAddress("2001:4860:4860::8888%mc1"));
-        Assert.state(IPAddressUtil.isIPv6LiteralAddress("0001:0002:0003:0004:0005:ffff:111.112.113.114%mc"));
+        InetAddressValidator inetAddressValidator = InetAddressValidator.getInstance();
+        Assert.state(inetAddressValidator.isValidInet6Address("2001::192:168:230:206"));
+        Assert.state(inetAddressValidator.isValidInet6Address("2002::192:168:230:211"));
+        Assert.state(inetAddressValidator.isValidInet6Address("2001:4860:4860::8888"));
+        Assert.state(inetAddressValidator.isValidInet6Address("2001:4860:4860::8888%mc1"));
+        Assert.state(inetAddressValidator.isValidInet6Address("2001:4860:4860::8888%mc1"));
+        Assert.state(inetAddressValidator.isValidInet6Address("0001:0002:0003:0004:0005:ffff:111.112.113.114%mc"));
     }
 
     @Test

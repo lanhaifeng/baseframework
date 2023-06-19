@@ -13,7 +13,7 @@ import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.expression.spel.support.StandardEvaluationContext;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.Nullable;
+import jakarta.annotation.Nullable;
 
 /**
  * 类名:SpElHandler <br/>

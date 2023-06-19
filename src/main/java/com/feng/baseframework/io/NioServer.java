@@ -1,10 +1,10 @@
 package com.feng.baseframework.io;
 
 import com.feng.baseframework.util.IOUtils;
-import com.sun.xml.internal.messaging.saaj.util.ByteOutputStream;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.exception.ExceptionUtils;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
@@ -111,7 +111,7 @@ public class NioServer {
         // 创建读取的缓冲区
         int byteSize = 8;
         ByteBuffer buffer = ByteBuffer.allocate(byteSize);
-        ByteOutputStream bos = new ByteOutputStream(byteSize);
+        ByteArrayOutputStream bos = new ByteArrayOutputStream(byteSize);
         int sumSize = 0;
         int numBytesRead;
         byte[] bytes;
@@ -131,7 +131,7 @@ public class NioServer {
             channel.socket().close();
             channel.close();
         }
-        byte[] datas = bos.getBytes();
+        byte[] datas = bos.toByteArray();
 
         //log.info(Arrays.toString(datas));
         String msg = new String(datas, 0, sumSize, "UTF-8");

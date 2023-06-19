@@ -4,7 +4,7 @@ import com.feng.baseframework.annotation.ClassLevelAdviceTag;
 import com.feng.baseframework.annotation.CustomOnProfileCondition;
 import com.feng.baseframework.model.User;
 
-import javax.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotEmpty;
 import java.util.List;
 
 /**

@@ -8,7 +8,6 @@ import sun.security.x509.X500Name;
 
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -37,8 +36,8 @@ public final class SecretKeyUtil {
 	 * 生成密钥对
 	 *
 	 * @param algorithm			加密算法，见javadoc <a href="/jdk_64_1.8/jdk8docs/technotes/guides/security/StandardNames.html#KeyPairGenerator" />
-	 * @param keySize			秘钥长度
-	 * @param random			安全随机源
+	 * @param keySize			秘钥长度
+	 * @param random			安全随机源
 	 * @author lanhaifeng
 	 * @return java.security.KeyPair
 	 */
@@ -58,7 +57,7 @@ public final class SecretKeyUtil {
 	 * 生成密钥对
 	 *
 	 * @param algorithm				加密算法，见javadoc <a href="/jdk_64_1.8/jdk8docs/technotes/guides/security/StandardNames.html#KeyPairGenerator" />
- 	 * @param keySize				秘钥长度
+ 	 * @param keySize				秘钥长度
 	 * @author lanhaifeng
 	 * @return java.security.KeyPair
 	 */
@@ -90,7 +89,7 @@ public final class SecretKeyUtil {
 	 *
 	 * @param password		密码
 	 * @author lanhaifeng
-	 * @return javax.crypto.SecretKey
+	 * @return jakarta.crypto.SecretKey
 	 */
 	public static SecretKey generateSecretKey(String password) throws NoSuchAlgorithmException {
 		return generateSecretKey("AES", password);
@@ -103,7 +102,7 @@ public final class SecretKeyUtil {
 	 * @param algorithm			加密算法，如：AES、AES/ECB/PKCS5Padding
 	 * @param password			密码
 	 * @author lanhaifeng
-	 * @return javax.crypto.SecretKey
+	 * @return jakarta.crypto.SecretKey
 	 */
 	public static SecretKey generateSecretKey(String algorithm, String password) throws NoSuchAlgorithmException {
 		KeyGenerator gen = KeyGenerator.getInstance(algorithm);
@@ -118,7 +117,6 @@ public final class SecretKeyUtil {
 	 *
 	 * @param keyStoreParam		keystore需要的参数
 	 * @author lanhaifeng
-	 * @return void
 	 */
 	public static void generateKeyStoreFile(KeyStoreParam keyStoreParam) throws KeyStoreException, CertificateException, NoSuchAlgorithmException, IOException, NoSuchProviderException, SignatureException, InvalidKeyException {
 		Objects.requireNonNull(keyStoreParam);
@@ -135,12 +133,15 @@ public final class SecretKeyUtil {
 
 		//生成私钥
 		PrivateKey privateKey = keyPair.getPrivateKey();
+
 		//组织、区域等信息
-		X500Name x500Name = new X500Name(keyStoreParam.getCommonName(), keyStoreParam.getOrganizationalUnit(), keyStoreParam.getOrganization(), keyStoreParam.getCity(), keyStoreParam.getProvince(), keyStoreParam.getCountry());
+		X500Name x500Name = new X500Name(keyStoreParam.getCommonName(),
+				keyStoreParam.getOrganizationalUnit(), keyStoreParam.getOrganization(),
+				keyStoreParam.getCity(), keyStoreParam.getProvince(), keyStoreParam.getCountry());
 		//构造证书链对象
 		X509Certificate[] chain = new X509Certificate[1];
 		//生成证书对象
-		chain[0] = keyPair.getSelfCertificate(x500Name, new Date(), keyStoreParam.getValidity() * 24 * 60 * 60l);
+		chain[0] = keyPair.getSelfCertificate(x500Name, new Date(), keyStoreParam.getValidity() * 24 * 60 * 60L);
 
 		FileOutputStream fos = new FileOutputStream(keyStoreParam.getFilePath());
 		char[] keyPassword = StringUtils.isNotBlank(keyStoreParam.getKeyPassword()) ? keyStoreParam.getKeyPassword().trim().toCharArray() : null;
@@ -156,8 +157,8 @@ public final class SecretKeyUtil {
 	 * 通过keystore文件路径得到keystore
 	 *
 	 * @param storePath					秘钥库路径
-	 * @param storePassword				秘钥库密码
-	 * @param type						类型，如：jks，见javadoc <a href="/jdk_64_1.8/jdk8docs/technotes/guides/security/StandardNames.html#KeyStore" />
+	 * @param storePassword				秘钥库密码
+	 * @param type						类型，如：jks，见javadoc <a href="/jdk_64_1.8/jdk8docs/technotes/guides/security/StandardNames.html#KeyStore" />
 	 * @author lanhaifeng
 	 * @return java.security.KeyStore
 	 */
@@ -165,7 +166,7 @@ public final class SecretKeyUtil {
 		//获取keystore实例
 		KeyStore keyStore = KeyStore.getInstance(type);
 		//装载keystore
-		keyStore.load(new FileInputStream(new File(storePath)), storePassword.toCharArray());
+		keyStore.load(new FileInputStream(storePath), storePassword.toCharArray());
 
 		return keyStore;
 	}
@@ -175,7 +176,7 @@ public final class SecretKeyUtil {
 	 * 通过keystore文件路径得到keystore
 	 *
 	 * @param storePath					秘钥库路径
-	 * @param storePassword				秘钥库密码
+	 * @param storePassword				秘钥库密码
 	 * @author lanhaifeng
 	 * @return java.security.KeyStore
 	 */
@@ -188,8 +189,8 @@ public final class SecretKeyUtil {
 	 * 从keystore中获取私钥
 	 *
 	 * @param keyStore				秘钥库管理工具
-	 * @param alias					秘钥别名
-	 * @param keyPassword			秘钥密码
+	 * @param alias					秘钥别名
+	 * @param keyPassword			秘钥密码
 	 * @author lanhaifeng
 	 * @return java.security.PrivateKey
 	 */
@@ -204,7 +205,7 @@ public final class SecretKeyUtil {
 	 * 从keystore中获取公钥
 	 *
 	 * @param keyStore			秘钥库管理工具
-	 * @param alias				秘钥别名
+	 * @param alias				秘钥别名
 	 * @author lanhaifeng
 	 * @return java.security.PublicKey
 	 */
@@ -232,7 +233,7 @@ public final class SecretKeyUtil {
 	 * 用字符串加载公钥
 	 *
 	 * @param algorithm				加密算法，见javadoc <a href="/jdk_64_1.8/jdk8docs/technotes/guides/security/StandardNames.html#KeyFactory" />
-	 * @param keySpec				秘钥编码规则实例
+	 * @param keySpec				秘钥编码规则实例
 	 * @author lanhaifeng
 	 * @return java.security.Key
 	 */
@@ -255,6 +256,7 @@ public final class SecretKeyUtil {
 		Assert.state(StringUtils.isNotBlank(keyBase64Str), "keyBase64Str参数不能为空");
 		byte[] encPubKey = Base64EncryptUtil.decodeToBytes(keyBase64Str);
 		//创建已编码的公钥规格
+		assert encPubKey != null;
 		X509EncodedKeySpec encPubKeySpec = new X509EncodedKeySpec(encPubKey);
 		return loadPublicKeyFromString("RSA", encPubKeySpec);
 	}
@@ -263,7 +265,7 @@ public final class SecretKeyUtil {
 	 * 2019/12/4 17:05
 	 * 读取字符串文件加载公钥
 	 *
-	 * @param publicKeyPath
+	 * @param publicKeyPath  公钥路径
 	 * @author lanhaifeng
 	 * @return java.security.PublicKey
 	 */
@@ -276,7 +278,7 @@ public final class SecretKeyUtil {
 	 * 2019/12/4 17:05
 	 * 读取对象流文件加载公钥
 	 *
-	 * @param publicKeyPath
+	 * @param publicKeyPath		公钥路径
 	 * @author lanhaifeng
 	 * @return java.security.PublicKey
 	 */
@@ -290,7 +292,7 @@ public final class SecretKeyUtil {
 	 * 用字符串加载私钥
 	 *
 	 * @param algorithm				加密算法，见javadoc <a href="/jdk_64_1.8/jdk8docs/technotes/guides/security/StandardNames.html#KeyFactory" />
-	 * @param keySpec				秘钥编码规则实例
+	 * @param keySpec				秘钥编码规则实例
 	 * @author lanhaifeng
 	 * @return java.security.Key
 	 */
@@ -313,6 +315,7 @@ public final class SecretKeyUtil {
 		Assert.state(StringUtils.isNotBlank(keyBase64Str), "keyBase64Str参数不能为空");
 		byte[] encPriKey = Base64EncryptUtil.decodeToBytes(keyBase64Str);
 		// 创建已编码的私钥规格
+		assert encPriKey != null;
 		PKCS8EncodedKeySpec encPriKeySpec = new PKCS8EncodedKeySpec(encPriKey);
 		return loadPrivateKeyFromString("RSA", encPriKeySpec);
 	}
@@ -321,7 +324,7 @@ public final class SecretKeyUtil {
 	 * 2019/12/4 17:05
 	 * 读取对象流文件加载公钥
 	 *
-	 * @param privateKeyPath
+	 * @param privateKeyPath		私钥路径
 	 * @author lanhaifeng
 	 * @return java.security.PrivateKey
 	 */

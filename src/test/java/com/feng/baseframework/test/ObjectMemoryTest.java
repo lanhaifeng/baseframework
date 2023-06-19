@@ -2,17 +2,24 @@ package com.feng.baseframework.test;
 
 import com.feng.baseframework.model.Student;
 import com.feng.baseframework.model.Teacher;
-import com.feng.baseframework.util.ClassIntrospector;
 import com.feng.baseframework.util.MemoryUtil;
-import jdk.nashorn.internal.ir.debug.ObjectSizeCalculator;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.openjdk.jol.info.ClassLayout;
+import org.openjdk.jol.info.GraphLayout;
 
 /**
  * baseframework
  * 2019/2/23 17:27
  * 占用内存测试类
+ * 
+ * 1.运行报错：java.lang.reflect.InaccessibleObjectException:
+ * Unable to make field private final byte[] java.lang.String.value accessible:
+ * module java.base does not "opens java.lang" to unnamed module @2096442d
+ * 添加参数：--add-opens java.base/java.lang=ALL-UNNAMED
+ * 2.找不到包
+ * 手动在dependencies添加jar包
  *
  * @author lanhaifeng
  * @since
@@ -45,26 +52,31 @@ public class ObjectMemoryTest {
 
 	@Test
 	public void testMemory3(){
-		ObjectSizeCalculator.MemoryLayoutSpecification memoryLayoutSpecification = ObjectSizeCalculator.getEffectiveMemoryLayoutSpecification();
-
-		System.out.println(memoryLayoutSpecification.getObjectHeaderSize());
-		System.out.println(memoryLayoutSpecification.getArrayHeaderSize());
-		System.out.println(memoryLayoutSpecification.getReferenceSize());
-		System.out.println(ClassIntrospector.getObjectRefSize());
-		System.out.println(ObjectSizeCalculator.getObjectSize(stu));
+		/**
+		 * 引入工具包，在高版本jdk中已经移除ObjectSizeCalculator
+		 * <dependency>
+		 *     <groupId>org.openjdk.jol</groupId>
+		 *     <artifactId>jol-core</artifactId>
+		 *     <version>0.13</version>
+		 * </dependency>
+		 */
+		ClassLayout classLayout = ClassLayout.parseInstance(stu);
+		GraphLayout graphLayout = GraphLayout.parseInstance(stu);
+		System.out.println(graphLayout.totalSize());
 		System.out.println(MemoryUtil.getObjecSizeByRamUsageEstimator(stu));
 		System.out.println(MemoryUtil.getObjecSizeByRamUsageEstimator(stu));
 
-		Assert.assertTrue("期待对象引用大小为4", ClassIntrospector.getObjectRefSize() == 4);
-		Assert.assertTrue("期待对象堆中内存为144", ObjectSizeCalculator.getObjectSize(stu) == 144);
+		//查看对象内部信息
+		System.out.println(classLayout.toPrintable());
 
+		//查看对象外部信息
+		System.out.println(graphLayout.toPrintable());
 
+		//获取对象总大小
+		System.out.println("size : " + graphLayout.totalSize());
 
-		Assert.assertTrue("期待数组头大小为16", memoryLayoutSpecification.getArrayHeaderSize() == 16);
-		Assert.assertTrue("期待对象头大小为12", memoryLayoutSpecification.getObjectHeaderSize() == 12);
-		Assert.assertTrue("期待对象填充大小为8", memoryLayoutSpecification.getObjectPadding() == 8);
-		Assert.assertTrue("期待对象引用大小为4", memoryLayoutSpecification.getReferenceSize() == 4);
-		Assert.assertTrue("期待父属性填充大小为4", memoryLayoutSpecification.getSuperclassFieldPadding() == 4);
+		Assert.assertEquals("期待对象引用大小为4", 4, classLayout.headerSize());
+		Assert.assertEquals("期待对象堆中内存为144", 144, graphLayout.totalSize());
 	}
 
 	@Test

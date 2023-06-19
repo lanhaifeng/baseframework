@@ -1,7 +1,7 @@
 package com.feng.baseframework.security;
 
-import javax.mail.Authenticator;
-import javax.mail.PasswordAuthentication;
+import jakarta.mail.Authenticator;
+import jakarta.mail.PasswordAuthentication;
 
 /**
  * baseframework

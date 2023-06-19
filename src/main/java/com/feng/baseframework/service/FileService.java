@@ -1,6 +1,6 @@
 package com.feng.baseframework.service;
 
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletResponse;
 
 public interface FileService {
 

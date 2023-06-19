@@ -5,7 +5,7 @@ import com.google.protobuf.InvalidProtocolBufferException;
 import com.hzmc.common.protobuf.ProtoActiveMQ;
 import org.apache.activemq.ActiveMQConnectionFactory;
 
-import javax.jms.*;
+import jakarta.jms.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;

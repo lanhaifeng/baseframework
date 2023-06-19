@@ -3,7 +3,7 @@ package com.feng.baseframework.semaphore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotEmpty;
 import java.util.concurrent.Semaphore;
 
 /**

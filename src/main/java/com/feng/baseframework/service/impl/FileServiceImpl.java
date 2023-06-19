@@ -4,7 +4,7 @@ import com.feng.baseframework.service.FileService;
 import com.feng.baseframework.util.FileConvertUtil;
 import org.springframework.stereotype.Service;
 
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletResponse;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Arrays;

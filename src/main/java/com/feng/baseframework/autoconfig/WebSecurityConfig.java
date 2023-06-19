@@ -4,144 +4,121 @@ import com.feng.baseframework.constant.GlobalPropertyConfig;
 import com.feng.baseframework.constant.LdapPropertyConfig;
 import com.feng.baseframework.constant.SecurityModeEnum;
 import com.feng.baseframework.security.MyAuthenticationProvider;
-import com.feng.baseframework.security.MySecurityMetadataSource;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.annotation.Resource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.ldap.core.LdapTemplate;
 import org.springframework.ldap.core.support.LdapContextSource;
-import org.springframework.security.access.AccessDecisionManager;
 import org.springframework.security.access.AccessDecisionVoter;
-import org.springframework.security.access.vote.AffirmativeBased;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.access.ConfigAttribute;
+import org.springframework.security.access.SecurityMetadataSource;
 import org.springframework.security.access.vote.RoleVoter;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.config.annotation.ObjectPostProcessor;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.authorization.AuthorizationDecision;
+import org.springframework.security.authorization.AuthorizationManager;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.SpringSecurityMessageSource;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
+import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.stereotype.Component;
 
-import javax.annotation.Resource;
 import javax.naming.Context;
-import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.function.Supplier;
+
+import static org.springframework.security.access.AccessDecisionVoter.ACCESS_DENIED;
+import static org.springframework.security.access.AccessDecisionVoter.ACCESS_GRANTED;
 
 /**
- * @ProjectName: baseframework
- * @Description: 安全验证配置类
- * @Author: lanhaifeng
- * @CreateDate: 2018/5/21 23:14
- * @UpdateUser:
- * @UpdateDate: 2018/5/21 23:14
- * @UpdateRemark:
- * @Version: 1.0
+ * 网络安全配置
+ *
+ * @author lanhaifeng
+ * @date 2023/06/29
  */
 @Configuration
 @EnableWebSecurity
 //prePostEnabled=true启用注解@PreAuthorize
 //jsr250Enabled=true启用注解@RolesAllowed
 //securedEnabled=true启用注解@Secured
-@EnableGlobalMethodSecurity(prePostEnabled = true, jsr250Enabled = true, securedEnabled = true)
-public class WebSecurityConfig  extends WebSecurityConfigurerAdapter {
-    @Autowired
+@EnableMethodSecurity(jsr250Enabled = true, securedEnabled = true)
+public class WebSecurityConfig {
+    @Resource
     private MyAuthenticationProvider myAuthenticationProvider;
-    @Autowired
+    @Resource
     private GlobalPropertyConfig globalPropertyConfig;
-    @Autowired
-    private MySecurityMetadataSource mySecurityMetadataSource;
     @Resource(name = "myUserDetailsService")
     private UserDetailsService userService;
-    @Autowired
+    @Resource
     private PasswordEncoder myPasswordEncoder;
-    @Autowired
+    @Resource
     private LdapPropertyConfig ldapPropertyConfig;
 
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        //自定义认证
-        if (SecurityModeEnum.CUSTOM_AUTHENTICATION.toString().equals(globalPropertyConfig.getSecurityMode())) {
-            auth.authenticationProvider(myAuthenticationProvider);
-        }
-        //默认认证
-        if (SecurityModeEnum.DEFAULT_AUTHENTICATION.toString().equals(globalPropertyConfig.getSecurityMode())) {
-            auth.inMemoryAuthentication().withUser("admin").password("admin").
-                    roles("ADMIN").and().withUser("user").password("user").roles("USER").
-                    and().withUser("test").password("test").roles("TEST");
-        }
-        //无认证
-        if (SecurityModeEnum.NO_AUTHENTICATION.toString().equals(globalPropertyConfig.getSecurityMode()));
-    }
-
-    //SimpleUrlHandlerMapping UrlFilenameViewController
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         //自定义认证
         if (SecurityModeEnum.CUSTOM_AUTHENTICATION.toString().equals(globalPropertyConfig.getSecurityMode())) {
             http
-                    .authorizeRequests()
-                    //.antMatchers("/", "/static/index.html").permitAll()
-                    .antMatchers("/", "/static/index.html").authenticated()
-                    .antMatchers("/anonymous/**").anonymous()
-                    .anyRequest().authenticated()
-                    .and()
-                    .formLogin()
-                    .loginPage("/login")
-                    .permitAll()
-                    .defaultSuccessUrl("/static/hello.html")
-                    .and()
-                    .logout()
-                    .logoutSuccessUrl("/logout")
-                    .permitAll()
-                    .invalidateHttpSession(true)
-                    .and()
-                    .rememberMe()
-                    .tokenValiditySeconds(1209600);
+                .authorizeHttpRequests(authorize -> authorize
+                        //.requestMatchers("/", "/static/index.html").permitAll()
+                        .requestMatchers("/", "/static/index.html").authenticated()
+                        .requestMatchers("/anonymous/**").anonymous()
+                        .anyRequest().authenticated()
+                )
+                .formLogin(formLogin -> formLogin
+                        .loginPage("/login")
+                        .loginPage("/login")
+                        .permitAll()
+                        .defaultSuccessUrl("/static/hello.html")
+                )
+                .logout(logout -> logout
+                        .logoutSuccessUrl("/logout")
+                        .permitAll()
+                        .invalidateHttpSession(true)
+                )
+                .authenticationProvider(myAuthenticationProvider);
         }
-        //默认认证
+        //自定义认证
         if (SecurityModeEnum.DEFAULT_AUTHENTICATION.toString().equals(globalPropertyConfig.getSecurityMode())) {
-            http.csrf().disable()
-                    .formLogin()          // 定义当需要用户登录时候，转到的登录页面。
-                    .defaultSuccessUrl("/static/hello.html", true)
-                    .and()
-                    .authorizeRequests()    // 定义哪些URL需要被保护、哪些不需要被保护
-//                    .antMatchers("/anonymous/**").anonymous()  //定义那些url匿名认证
-//                    .antMatchers("/baseManage/getInfo").hasAnyRole("ADMIN", "TEST")  //使用自定义资源类后，不支持antMatchers方式配置的权限
-                    .anyRequest()        // 任何请求,登录后可以访问
-                    .authenticated()
-                    .withObjectPostProcessor(new ObjectPostProcessor<FilterSecurityInterceptor>() {
-                        @Override
-                        public <O extends FilterSecurityInterceptor> O postProcess(O fsi) {
-                            //利用后置类为FilterSecurityInterceptor配置自定义资源类
-                            fsi.setSecurityMetadataSource(mySecurityMetadataSource);
-                            //AffirmativeBased中Voter默认使用的是WebExpressionVoter，
-                            // 而WebExpressionVoter中ConfigAttribute使用的是WebExpressionConfigAttribute对象，该类是包内可见，
-                            // 因此自定义MySecurityMetadataSource无法WebExpressionConfigAttribute对象，导致无法验证，替换AffirmativeBased中Voter为RoleVoter
-                            fsi.setAccessDecisionManager(getAccessDecisionManager());
-                            return fsi;
-                        }
-                    });
+            http
+                .csrf(AbstractHttpConfigurer::disable)
+                .authorizeHttpRequests(authorize -> authorize
+                        //.requestMatchers("/anonymous/**").anonymous()  //定义那些url匿名认证
+                        //.requestMatchers("/baseManage/getInfo").hasAnyRole("ADMIN", "TEST")  //使用自定义资源类后，不支持antMatchers方式配置的权限
+                        .anyRequest().authenticated()
+                )
+                .formLogin(formLogin -> formLogin
+                        // 定义当需要用户登录时候，转到的登录页面。
+                        .defaultSuccessUrl("/static/hello.html")
+                )
+                .userDetailsService(getInMemoryUserDetailsManager());
         }
         //无认证
-        if (SecurityModeEnum.NO_AUTHENTICATION.toString().equals(globalPropertyConfig.getSecurityMode())){
-            http.csrf().disable();
+        if (SecurityModeEnum.NO_AUTHENTICATION.toString().equals(globalPropertyConfig.getSecurityMode())) {
+            http.csrf(AbstractHttpConfigurer::disable);
         }
+
+        return http.build();
     }
 
-    private AccessDecisionManager getAccessDecisionManager(){
-        return new AffirmativeBased(getAccessDecisionVoters());
-    }
+    private UserDetailsService getInMemoryUserDetailsManager(){
+        User.UserBuilder users = User.withDefaultPasswordEncoder();
+        InMemoryUserDetailsManager manager = new InMemoryUserDetailsManager();
+        manager.createUser(users.username("admin").password("admin").roles("ADMIN").build());
+        manager.createUser(users.username("user").password("user").roles("USER").build());
+        manager.createUser(users.username("test").password("test").roles("TEST").build());
 
-    private List<AccessDecisionVoter<?>> getAccessDecisionVoters(){
-        List<AccessDecisionVoter<?>> accessDecisionVoters = new ArrayList<>();
-        accessDecisionVoters.add(new RoleVoter());
-
-        return accessDecisionVoters;
+        return manager;
     }
 
     @Bean
@@ -180,4 +157,33 @@ public class WebSecurityConfig  extends WebSecurityConfigurerAdapter {
     public LdapTemplate ldapTemplate(){
         return new LdapTemplate(ldapContextSource());
     }
+}
+
+@Component
+class MyAccessAuthenticationManager implements AuthorizationManager<Object> {
+    private final AccessDecisionVoter accessDecisionVoter;
+    private final SecurityMetadataSource securityMetadataSource;
+    protected MessageSourceAccessor messages = SpringSecurityMessageSource.getAccessor();
+
+    public MyAccessAuthenticationManager(SecurityMetadataSource securityMetadataSource) {
+        this.securityMetadataSource = securityMetadataSource;
+        this.accessDecisionVoter = new RoleVoter();
+    }
+
+    @Override
+    public AuthorizationDecision check(Supplier<Authentication> authentication, Object object) {
+        Collection<ConfigAttribute> attributes = this.securityMetadataSource.getAttributes(object);
+        int decision = accessDecisionVoter.vote(authentication.get(), object, attributes);
+        switch (decision) {
+            case ACCESS_GRANTED -> {
+                return new AuthorizationDecision(true);
+            }
+            case ACCESS_DENIED -> {
+                return new AuthorizationDecision(false);
+            }
+        }
+        throw new AccessDeniedException(
+                this.messages.getMessage("AbstractAccessDecisionManager.accessDenied", "Access is denied"));
+    }
+
 }

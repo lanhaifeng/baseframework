@@ -1,17 +1,11 @@
 package com.feng.baseframework.test;
 
 import io.jsonwebtoken.lang.Assert;
+import jakarta.annotation.Resource;
 import org.apache.commons.lang.StringUtils;
 import org.junit.Test;
-import org.springframework.http.*;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.web.client.RestTemplate;
-
-import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * @ProjectName: baseframework
@@ -24,7 +18,7 @@ import java.util.Map;
  * @Version: 1.0
  */
 @ActiveProfiles("pro,dev1")
-public class RestTemplateTest extends BaseFrameworkApplicationTest {
+public class RestTemplateConfiguration extends BaseFrameworkApplicationTest {
 
     @Resource(name = "restTemplate")
     private RestTemplate simpleRestTemplate;

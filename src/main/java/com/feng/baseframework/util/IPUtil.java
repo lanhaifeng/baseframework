@@ -3,7 +3,7 @@ package com.feng.baseframework.util;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.exception.ExceptionUtils;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 import java.net.*;
 import java.util.ArrayList;
 import java.util.Enumeration;
