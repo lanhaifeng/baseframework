@@ -75,7 +75,7 @@ public class JacksonUtil {
      * @description json 转JavaBean
      * @date: 2018/5/16 19:28
      * @param jsonString
-     * @param clazz
+     * @param clazz
      * @return T
      */
     public static <T> T json2pojo(String jsonString, Class<T> clazz) {
@@ -92,7 +92,7 @@ public class JacksonUtil {
      * @description json 转JavaBean
      * @date: 2018/5/16 19:28
      * @param jsonString
-     * @param clazz
+     * @param clazz
      * @return T
      */
     public static <T> T json2pojo(String jsonString, JavaType javaType) {
@@ -106,10 +106,10 @@ public class JacksonUtil {
 
     /**
      * @author: lanhaifeng
-     * @description json 转JavaBean
+     * @description jackson复杂泛型转换
      * @date: 2018/5/16 19:28
      * @param jsonString
-     * @param clazz
+     * @param typeReference
      * @return T
      */
     public static <T> T json2pojo(String jsonString, TypeReference<T> typeReference) {
@@ -160,7 +160,7 @@ public class JacksonUtil {
      * @description 解析工具，把json解析成list，如果list内部的元素存在jsonString，继续解析
      * @date: 2018/5/16 19:30
      * @param json
-     * @param mapper
+     * @param mapper
      * @return java.util.List<java.lang.Object>
      */
     private static List<Object> json2ListRecursion(String json, ObjectMapper mapper) throws Exception {
@@ -189,7 +189,7 @@ public class JacksonUtil {
      * @description 把json解析成map，如果map内部的value存在jsonString，继续解析
      * @date: 2018/5/16 19:30
      * @param json
-     * @param mapper
+     * @param mapper
      * @return java.util.Map<java.lang.String,java.lang.Object>
      */
     private static Map<String, Object> json2MapRecursion(String json, ObjectMapper mapper) throws Exception {
@@ -222,7 +222,7 @@ public class JacksonUtil {
      * @description json数组字符串转换为列表
      * @date: 2018/5/16 19:30
      * @param jsonArrayStr
-     * @param clazz
+     * @param clazz
      * @return java.util.List<T>
      */
     public static <T> List<T> json2list(String jsonArrayStr, Class<T> clazz) {
@@ -241,7 +241,7 @@ public class JacksonUtil {
      * @description 获取泛型的Collection Type
      * @date: 2018/5/16 19:31
      * @param collectionClass 泛型的Collection
-     * @param elementClasses 元素类
+     * @param elementClasses 元素类
      * @return com.fasterxml.jackson.databind.JavaType Java类型
      */
     public static JavaType getCollectionType(Class<?> collectionClass, Class<?>... elementClasses) {
@@ -253,7 +253,7 @@ public class JacksonUtil {
      * @description 转JavaBean
      * @date: 2018/5/16 19:32
      * @param map
-     * @param clazz
+     * @param clazz
      * @return T
      */
     public static <T> T map2pojo(Map map, Class<T> clazz) {
@@ -280,7 +280,7 @@ public class JacksonUtil {
      * @description 转JavaBean
      * @date: 2018/5/16 19:32
      * @param obj
-     * @param clazz
+     * @param clazz
      * @return T
      */
     public static <T> T obj2pojo(Object obj, Class<T> clazz) {
