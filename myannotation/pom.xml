@@ -18,12 +18,17 @@
     </properties>
 
     <dependencies>
-        <!-- 没有自动在META-INF/services下创建javax.annotation.processing.Processor配置文件 -->
-        <!--<dependency>
+        <!-- 自动在META-INF/services下创建javax.annotation.processing.Processor配置文件 -->
+        <dependency>
             <groupId>com.google.auto.service</groupId>
             <artifactId>auto-service-annotations</artifactId>
             <version>1.0.1</version>
-        </dependency>-->
+        </dependency>
+        <dependency>
+            <groupId>com.google.auto.service</groupId>
+            <artifactId>auto-service</artifactId>
+            <version>1.0.1</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -39,7 +44,6 @@
                     <compilerArguments>
                         <bootclasspath>${JAVA17_HOME}/lib/jrt-fs.jar</bootclasspath>
                     </compilerArguments>
-                    <compilerArgument>-proc:none</compilerArgument>
                     <compilerArgs>
                         <arg>--add-exports</arg><arg>jdk.compiler/com.sun.tools.javac.api=ALL-UNNAMED</arg>
                         <arg>--add-exports</arg><arg>jdk.compiler/com.sun.tools.javac.code=ALL-UNNAMED</arg>

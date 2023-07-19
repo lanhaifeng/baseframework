@@ -1,6 +1,7 @@
 package com.feng.annotation.processor;
 
 import com.feng.annotation.Setter;
+import com.google.auto.service.AutoService;
 import com.sun.source.tree.Tree;
 import com.sun.tools.javac.api.JavacTrees;
 import com.sun.tools.javac.code.Flags;
@@ -28,6 +29,8 @@ import java.util.Set;
  */
 @SupportedAnnotationTypes("com.feng.annotation.Setter")
 @SupportedSourceVersion(SourceVersion.RELEASE_17)
+@SupportedOptions({"debug", "verify"})
+@AutoService(Processor.class)
 public class SetterProcessor extends AbstractProcessor {
     private Messager messager;
 
