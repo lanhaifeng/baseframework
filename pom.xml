@@ -352,12 +352,10 @@
 		</dependency>
 		<!-- my-annotation -->
 		<dependency>
-			<groupId>com.feng</groupId>
+			<groupId>com.feng.study</groupId>
 			<artifactId>my-annotation</artifactId>
 			<version>0.0.3</version>
-			<!--<scope>system</scope>
-			<systemPath>${basedir}/myannotation/target/my-annotation-0.0.3.jar</systemPath>-->
-		</dependency>
+    	</dependency>
 		<!-- snmp -->
 		<dependency>
 			<groupId>org.snmp4j</groupId>
@@ -610,13 +608,19 @@
 				<configuration>
 					<source>17</source>
 					<target>17</target>
-					<encoding>utf-8</encoding>
-					<compilerArguments>
-						<bootclasspath>${JAVA17_HOME}/lib/jrt-fs.jar</bootclasspath>
-					</compilerArguments>
-                    <!--<annotationProcessors>
-                        <annotationProcessor>com.feng.annotation.processor.SetterProcessor</annotationProcessor>
-                    </annotationProcessors>-->
+					<encoding>UTF-8</encoding>
+					<release combine.self="override"/>
+					<compilerArgs>
+						<arg>--add-exports</arg><arg>java.base/sun.security.tools.keytool=ALL-UNNAMED</arg>
+						<arg>--add-exports</arg><arg>java.base/sun.security.x509=ALL-UNNAMED</arg>
+					</compilerArgs>
+					<!--<annotationProcessorPaths>
+						<annotationProcessorPath>
+							<groupId>com.feng.study</groupId>
+							<artifactId>my-processor</artifactId>
+							<version>0.0.3</version>
+						</annotationProcessorPath>
+					</annotationProcessorPaths>-->
 				</configuration>
 			</plugin>
 			<plugin>
