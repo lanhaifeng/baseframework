@@ -2,12 +2,11 @@ package com.feng.baseframework.jdk8.concurrent;
 
 import com.feng.baseframework.model.Role;
 import io.jsonwebtoken.lang.Assert;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * baseframework
@@ -43,5 +42,52 @@ public class CollectionTest {
 		listStr.removeIf(StringUtils::isBlank);
 
 		Assert.state(listStr.size() == 2);
+	}
+
+	@Test
+	public void intersectionTest1() {
+		List<Integer> list1 = new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5));
+		List<Integer> list2 = new ArrayList<>(Arrays.asList(1, 2, 3, 6, 7, 8, 9));
+		System.out.println("交集前集合值：" + list1 + "," + list2);
+
+		boolean existIntersection  = list1.retainAll(list2);
+		System.out.println("是否存在交集：" + existIntersection +
+				",交集：" + list1 + ",交集后集合值：" + list1 + "," + list2);
+
+		list1 = new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5));
+		list2 = new ArrayList<>(Arrays.asList(1, 2, 3, 6, 7, 8, 9));
+		System.out.println("交集前集合值：" + list1 + "," + list2);
+
+		List<Integer> list3 = new ArrayList<>(list1);
+		existIntersection  = list3.retainAll(list2);
+		System.out.println("是否存在交集：" + existIntersection +
+				",交集：" + list3 + ",交集后集合值：" + list1 + "," + list2);
+
+		list1 = new ArrayList<>(Arrays.asList(1, 2, 3, 6, 7, 8, 9));
+		list2 = new ArrayList<>(Arrays.asList(1, 2, 3, 6, 7, 8, 9));
+		list3 = new ArrayList<>(list1);
+		System.out.println("交集前集合值：" + list1 + "," + list2);
+
+		existIntersection  = list3.retainAll(list2);
+		System.out.println("是否存在交集：" + existIntersection +
+				",交集：" + list3 + ",交集后集合值：" + list1 + "," + list2);
+	}
+
+	@Test
+	public void intersectionTest2() {
+		List<Integer> list1 = new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5));
+		List<Integer> list2 = new ArrayList<>(Arrays.asList(1, 2, 3, 6, 7, 8, 9));
+		Collection<Integer> intersection = CollectionUtils.intersection(list1, list2);
+		System.out.println("交集：" + intersection);
+
+		list1 = new ArrayList<>(Arrays.asList(1, 2, 3, 6, 7, 8, 9));
+		list2 = new ArrayList<>(Arrays.asList(1, 2, 3, 6, 7, 8, 9));
+		intersection = CollectionUtils.intersection(list1, list2);
+		System.out.println("交集：" + intersection);
+
+		list1 = new ArrayList<>();
+		list2 = new ArrayList<>();
+		intersection = CollectionUtils.intersection(list1, list2);
+		System.out.println("交集：" + intersection);
 	}
 }
