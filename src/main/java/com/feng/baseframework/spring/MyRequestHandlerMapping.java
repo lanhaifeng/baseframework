@@ -1,6 +1,5 @@
 package com.feng.baseframework.spring;
 
-import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.condition.*;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
@@ -16,7 +15,6 @@ import java.lang.reflect.Method;
  * @author lanhaifeng
  * @since 1.0
  **/
-@Component
 public class MyRequestHandlerMapping extends RequestMappingHandlerMapping {
 
     public MyRequestHandlerMapping() {
