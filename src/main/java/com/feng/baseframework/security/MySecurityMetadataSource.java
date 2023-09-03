@@ -97,7 +97,8 @@ public class MySecurityMetadataSource implements FilterInvocationSecurityMetadat
     private void loadPreMenusWithRoles(Map<String, String> menusWithRoles){
 		if(menusWithRoles == null) return;
 		menusWithRoles.put("/baseManage/*", "ROLE_ADMIN,ROLE_TEST,ROLE_USER");
-		menusWithRoles.put("/anonymous/*", "ROLE_ANONYMOUS");
+        menusWithRoles.put("/anonymous/*", "ROLE_ANONYMOUS");
+        menusWithRoles.put("/operlog/*", "ROLE_ANONYMOUS");
 	}
 
     //当url未匹配上需要系统管理员权限才能访问

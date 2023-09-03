@@ -1,7 +1,17 @@
 package com.feng.baseframework.mapper;
 
-import org.apache.ibatis.annotations.Mapper;
+import com.feng.annotation.TableInfo;
+import com.feng.baseframework.model.OperLog;
+import org.springframework.stereotype.Component;
 
-@Mapper
-public interface OperLogMapper {
+@Component
+@TableInfo("oper_Log")
+public interface OperLogMapper extends CommonMapper<OperLog> {
+
+    /**
+     * @param operLog   操作日志
+     * @return {@link OperLog}
+     */
+    OperLog insertSelective(OperLog operLog);
+
 }
