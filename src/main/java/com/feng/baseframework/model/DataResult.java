@@ -1,6 +1,11 @@
 package com.feng.baseframework.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.feng.baseframework.constant.ResultEnum;
+import lombok.Getter;
+import lombok.Setter;
+
+import java.io.Serial;
 
 /**
  * @ProjectName: svc-search-biz
@@ -12,7 +17,11 @@ import com.fasterxml.jackson.annotation.JsonInclude;
  * @UpdateRemark:
  **/
 @JsonInclude(JsonInclude.Include.NON_NULL)
+@Setter
+@Getter
 public class DataResult<T> implements java.io.Serializable{
+    @Serial
+    private static final long serialVersionUID = 6682137523867425905L;
     /** 错误码. */
     private Integer code;
 
@@ -21,28 +30,37 @@ public class DataResult<T> implements java.io.Serializable{
 
     /** 具体的内容. */
     private T data;
-
-    public Integer getCode() {
-        return code;
+    public DataResult() {
+        super();
     }
 
-    public void setCode(Integer code) {
+    public DataResult(Integer code, String message, T data) {
         this.code = code;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
         this.message = message;
-    }
-
-    public T getData() {
-        return data;
-    }
-
-    public void setData(T data) {
         this.data = data;
+    }
+
+    public DataResult(ResultEnum resultEnum, T data) {
+        this(resultEnum.getCode(), resultEnum.getMessage(), data);
+    }
+
+    public static <T> DataResult<T> ok(T data) {
+        return new DataResult<>(ResultEnum.SUCCESS, data);
+    }
+
+    public static <T> DataResult<T> fail(ResultEnum ResultEnum, T data) {
+        return new DataResult<>(ResultEnum, data);
+    }
+
+    public static <T> DataResult<T> fail(ResultEnum ResultEnum) {
+        return new DataResult<>(ResultEnum, null);
+    }
+
+    public static <T> DataResult<T> fail(int ResultEnum, String message) {
+        return new DataResult<>(ResultEnum, message, null);
+    }
+
+    public static <T> DataResult<T> empty() {
+        return new DataResult<>(ResultEnum.SUCCESS, null);
     }
 }
