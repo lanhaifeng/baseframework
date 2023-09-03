@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.feng.baseframework.mapper.OperLogMapper">
+  <resultMap id="BaseResultMap" type="com.feng.baseframework.model.OperLog">
+    <id column="ID" jdbcType="INTEGER" property="id" />
+    <result column="LOG_MODULE" jdbcType="VARCHAR" property="logModule" />
+    <result column="USER_ID" jdbcType="INTEGER" property="userId" />
+    <result column="LOG_ACTION" jdbcType="VARCHAR" property="logAction" />
+    <result column="LOG_RESULT" jdbcType="VARCHAR" property="logResult" />
+    <result column="LOG_TIME" jdbcType="TIMESTAMP" property="logTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    ID, LOG_MODULE, USER_ID, LOG_ACTION, LOG_RESULT, LOG_TIME
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from oper_log
+    where ID = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from oper_log
+    where ID = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.feng.baseframework.model.OperLog">
+    insert into oper_log (ID, LOG_MODULE, USER_ID, 
+      LOG_ACTION, LOG_RESULT, LOG_TIME
+      )
+    values (#{id,jdbcType=INTEGER}, #{logModule,jdbcType=VARCHAR}, #{userId,jdbcType=INTEGER}, 
+      #{logAction,jdbcType=VARCHAR}, #{logResult,jdbcType=VARCHAR}, #{logTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.feng.baseframework.model.OperLog">
+    insert into oper_log
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        ID,
+      </if>
+      <if test="logModule != null">
+        LOG_MODULE,
+      </if>
+      <if test="userId != null">
+        USER_ID,
+      </if>
+      <if test="logAction != null">
+        LOG_ACTION,
+      </if>
+      <if test="logResult != null">
+        LOG_RESULT,
+      </if>
+      <if test="logTime != null">
+        LOG_TIME,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="logModule != null">
+        #{logModule,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="logAction != null">
+        #{logAction,jdbcType=VARCHAR},
+      </if>
+      <if test="logResult != null">
+        #{logResult,jdbcType=VARCHAR},
+      </if>
+      <if test="logTime != null">
+        #{logTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.feng.baseframework.model.OperLog">
+    update oper_log
+    <set>
+      <if test="logModule != null">
+        LOG_MODULE = #{logModule,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null">
+        USER_ID = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="logAction != null">
+        LOG_ACTION = #{logAction,jdbcType=VARCHAR},
+      </if>
+      <if test="logResult != null">
+        LOG_RESULT = #{logResult,jdbcType=VARCHAR},
+      </if>
+      <if test="logTime != null">
+        LOG_TIME = #{logTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.feng.baseframework.model.OperLog">
+    update oper_log
+    set LOG_MODULE = #{logModule,jdbcType=VARCHAR},
+      USER_ID = #{userId,jdbcType=INTEGER},
+      LOG_ACTION = #{logAction,jdbcType=VARCHAR},
+      LOG_RESULT = #{logResult,jdbcType=VARCHAR},
+      LOG_TIME = #{logTime,jdbcType=TIMESTAMP}
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

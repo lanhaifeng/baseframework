@@ -2,8 +2,8 @@ management:
     security:
         enabled: false
 mybatis:
-    mapper-locations: classpath*:com/baseframework/**/mapper/*Mapper.xml
-    type-aliases-package: com.feng.baseframework.**.domain
+  type-aliases-package: com.feng.baseframework.model
+  mapper-locations: mapper/*.xml
 server:
     context-path: /
     port: 1443

@@ -51,6 +51,8 @@ spring:
                     max-idle: 8
                     max-wait: -1
                     min-idle: 0
+        solr:
+            host: http://127.0.0.1:8983/solr
     devtools:
         restart:
             additional-paths: src/main/java

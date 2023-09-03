@@ -37,7 +37,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 // 启动注解事务管理，等同于xml配置方式的 <tx:annotation-driven />
 @EnableTransactionManagement
 @ComponentScan("com.feng.baseframework")
-@EnableConfigurationProperties({QuartzProperties.class})
+@EnableConfigurationProperties({QuartzProperties.class, SolrProperties.class})
 public class SystemConfiguartion {
 
     @Bean
