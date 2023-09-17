@@ -2,7 +2,7 @@ package com.feng.baseframework.autoconfig;
 
 import com.feng.annotation.TableInfo;
 import com.feng.baseframework.mapper.CommonMapper;
-import com.feng.baseframework.model.OperLog;
+import com.feng.baseframework.util.BeanUtil;
 import com.feng.baseframework.util.ClassLoaderUtil;
 import org.apache.ibatis.builder.StaticSqlSource;
 import org.apache.ibatis.executor.keygen.NoKeyGenerator;
@@ -11,8 +11,12 @@ import org.mybatis.spring.annotation.MapperScan;
 import org.mybatis.spring.boot.autoconfigure.ConfigurationCustomizer;
 import org.springframework.context.annotation.Configuration;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Objects;
 import java.util.function.Predicate;
 
 /**
@@ -42,22 +46,21 @@ public class MybatisConfiguration {
             mappers.forEach(cls -> {
                 System.out.println(cls.getCanonicalName());
                 TableInfo tableEntity = cls.getAnnotation(TableInfo.class);
+                Class<?> modelClass = BeanUtil.getSuperClassGenericType(cls, CommonMapper.class, 0);
 
                 if(Objects.nonNull(tableEntity)) {
                     for (Method declaredMethod : CommonMapper.class.getDeclaredMethods()) {
                         String id = cls.getCanonicalName() + "." + declaredMethod.getName();
                         StaticSqlSource staticSqlSource = new StaticSqlSource(configuration, String.format("select * from %s", tableEntity.value()));
 
-                        //TODO 构造resultMap
+                        //构造resultMap
                         List<ResultMapping> resultMappings = new ArrayList<>();
-                        resultMappings.add(new ResultMapping.Builder(configuration, "id", "ID", Integer.class).build());
-                        resultMappings.add(new ResultMapping.Builder(configuration, "logModule", "log_module", String.class).build());
-                        resultMappings.add(new ResultMapping.Builder(configuration, "userId", "user_id", Integer.class).build());
-                        resultMappings.add(new ResultMapping.Builder(configuration, "logAction", "log_action", String.class).build());
-                        resultMappings.add(new ResultMapping.Builder(configuration, "logResult", "log_result", String.class).build());
-                        resultMappings.add(new ResultMapping.Builder(configuration, "logTime", "log_time", Date.class).build());
+                        for (Field field : modelClass.getDeclaredFields()) {
+                            field.setAccessible(true);
+                            resultMappings.add(new ResultMapping.Builder(configuration, field.getName(), BeanUtil.camelToUnderLine(field.getName()), field.getType()).build());
+                        }
                         String resultMapId = "myResultMapping." + declaredMethod.getReturnType().getSimpleName();
-                        ResultMap resultMap = (new ResultMap.Builder(configuration, resultMapId, OperLog.class,
+                        ResultMap resultMap = (new ResultMap.Builder(configuration, resultMapId, modelClass,
                                 resultMappings)).build();
                         List<ResultMap> resultMaps = new ArrayList<>();
                         resultMaps.add(resultMap);
