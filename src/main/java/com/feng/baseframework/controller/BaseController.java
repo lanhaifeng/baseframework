@@ -1,10 +1,17 @@
 package com.feng.baseframework.controller;
 
+import com.feng.baseframework.autoconfig.SolrProperties;
+import com.feng.baseframework.model.DataResult;
 import com.feng.baseframework.model.JsonpProxy;
 import com.feng.baseframework.model.User;
+import jakarta.servlet.ServletContext;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotEmpty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
+import org.springframework.core.env.*;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
@@ -12,10 +19,9 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.WebApplicationContext;
 
-import jakarta.servlet.ServletContext;
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotEmpty;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * baseframework
@@ -27,11 +33,16 @@ import java.util.List;
  **/
 @RestController
 @Validated
+@RefreshScope
 public class BaseController extends ClassFilterController {
 
     private Logger logger = LoggerFactory.getLogger(getClass());
     @Autowired
     private WebApplicationContext webApplicationContext;
+    @Autowired
+    Environment env;
+    @Autowired
+    private SolrProperties solrProperties;
 
     /**
      * 描述: 返回根目录<br/>
@@ -124,5 +135,29 @@ public class BaseController extends ClassFilterController {
         user.setName("test5");
 
         return user;
+    }
+
+    @GetMapping("/baseManage/config/all")
+    public Map<String, Object> allProperties() {
+        Map<String, Object> map = new HashMap<>();
+        map.put("activeProfiles", env.getActiveProfiles());
+        map.put("defaultProfiles", env.getDefaultProfiles());
+
+        MutablePropertySources sources = ((AbstractEnvironment) env).getPropertySources();
+        for (PropertySource<?> source : sources) {
+            if (source instanceof EnumerablePropertySource) {
+                EnumerablePropertySource propertySource = (EnumerablePropertySource) source;
+                for (String s : propertySource.getPropertyNames()) {
+                    map.put(s, propertySource.getProperty(s));
+                }
+            }
+        }
+
+        return map;
+    }
+
+    @GetMapping(value = "/baseManage/config/_custom")
+    public DataResult<SolrProperties> myConfig(){
+        return DataResult.ok(solrProperties);
     }
 }

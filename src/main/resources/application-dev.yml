@@ -23,6 +23,10 @@ management:
             enabled: false
         solr:
             enabled: false
+    endpoints:
+        web:
+            exposure:
+                include: refresh
 security:
     mode: NO_AUTHENTICATION
 server:
@@ -80,3 +84,8 @@ spring:
             name: cn=admin,dc=mchz,dc=com
             pricipal:
                 name: displayName
+
+    cloud:
+        config:
+            import-check:
+                enabled: false
