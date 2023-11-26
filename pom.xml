@@ -580,6 +580,11 @@
 
 		<plugins>
 			<plugin>
+				<!-- 实际就是在build的组件中增加了此插件，用于GraalVM Native Support -->
+				<groupId>org.graalvm.buildtools</groupId>
+				<artifactId>native-maven-plugin</artifactId>
+			</plugin>
+			<plugin>
 				<groupId>com.github.shalousun</groupId>
 				<artifactId>smart-doc-maven-plugin</artifactId>
 				<version>2.4.1</version>
@@ -630,6 +635,12 @@
 						</goals>
 					</execution>
 				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-clean-plugin</artifactId>
+				<version>3.3.1</version>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
