@@ -543,6 +543,22 @@
 			<artifactId>jol-core</artifactId>
 			<version>0.13</version>
 		</dependency>
+
+		<dependency>
+			<groupId>org.apache.curator</groupId>
+			<artifactId>curator-framework</artifactId>
+			<version>5.2.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.curator</groupId>
+			<artifactId>curator-recipes</artifactId>
+			<version>5.2.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.curator</groupId>
+			<artifactId>curator-client</artifactId>
+			<version>5.2.1</version>
+		</dependency>
 	</dependencies>
 
 	<profiles>
@@ -668,7 +684,7 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
-				<version>2.7.6</version>
+				<version>3.1.0</version>
 				<executions>
 					<execution>
 						<goals>
