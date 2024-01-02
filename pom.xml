@@ -559,6 +559,11 @@
 			<artifactId>curator-client</artifactId>
 			<version>5.2.1</version>
 		</dependency>
+		<dependency>
+			<groupId>com.github.rholder</groupId>
+			<artifactId>guava-retrying</artifactId>
+			<version>2.0.0</version>
+		</dependency>
 	</dependencies>
 
 	<profiles>
